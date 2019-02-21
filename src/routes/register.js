@@ -11,7 +11,9 @@ const Register = () => (
     <Container>
         <Wrapper>
             <Title>
-            	<span role='img' aria-label='register'>⚒️</span> Request an invite
+            	<span role='img' aria-label='register'>⚒️ </span>
+                Request an invite
+                <span role='img' aria-label='register'> ⚒️</span>
             </Title>
             <AuthForm url='/register' />
             <StyledLink to='/login'>Already have an account? Login</StyledLink>

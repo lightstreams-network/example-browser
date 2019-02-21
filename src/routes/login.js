@@ -6,7 +6,9 @@ const Login = () => (
     <Container>
         <Wrapper>
             <Title>
-                <span role='img' aria-label='login'>🔑</span> Login
+                <span role='img' aria-label='login'>🔑 </span>
+                Login
+                <span role='img' aria-label='login'> 🔑</span>
             </Title>
             <AuthForm url='/login' />
             <StyledLink to='/register'>Don&apos;t have an account? Request an invite</StyledLink>

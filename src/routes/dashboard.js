@@ -1,13 +1,16 @@
 import React from 'react';
 import { Container, Wrapper, Title, Paragraph } from '../components/elements';
+import { IfNotAuthRedirectToLogin } from '../components/auth';
 
-const Home = () => (
-    <Container>
-        <Wrapper>
-            <Title>Dashboard</Title>
-            <Paragraph>Welcome user</Paragraph>
-        </Wrapper>
-    </Container>
+const Dashboard = () => (
+    <IfNotAuthRedirectToLogin>
+        <Container>
+            <Wrapper>
+                <Title>Dashboard</Title>
+                <Paragraph>Welcome user</Paragraph>
+            </Wrapper>
+        </Container>
+    </IfNotAuthRedirectToLogin>
 );
 
-export default Home;
+export default Dashboard;
