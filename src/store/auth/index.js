@@ -84,7 +84,7 @@ export function fetchUserFromToken(token) {
     return (dispatch) => {
         dispatch(requestUser());
 
-        return hGet('/profile', {
+        return hGet('/profile', null, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

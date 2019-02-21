@@ -4,22 +4,6 @@ function getBaseUrl(uri = '') {
     return `${SERVER_URL}${uri}`;
 }
 
-function getDefaultGetOptions() {
-    return {
-        method: 'GET'
-    };
-}
-
-function getDefaultPostOptions(data) {
-    return {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data),
-    };
-}
-
 // Note that the promise won't be rejected in case of HTTP 4xx or 5xx server responses.
 // The promise will be resolved just as it would be for HTTP 2xx.
 // So we inspect the response.status (response.ok is true for HTTP 2xx) and throw otherwise.
@@ -37,22 +21,40 @@ function toJson(response) {
     return response.json();
 }
 
+export const toQueryParams = (params) => {
+    return Object.keys(params)
+        .map(k => `${encodeURIComponent(k)}'='${encodeURIComponent(params[k])}`)
+        .join('&');
+};
+
 export const mapUriToBaseUrl = (uri) => getBaseUrl(uri);
 
 export const fetchAndCheck = (url, options) => fetch(url, options).then(checkStatus);
 
-export const fetchJson = (url, options) => fetchAndCheck(url, options).then(toJson);
+export const request = (method, url, data, options) => {
+    const settings = {
+        method: method.toUpperCase(),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        credentials:  'same-origin',
+    };
 
-export const hGet = (url, options = {}) => (
-    fetchJson(mapUriToBaseUrl(url), {
-        ...getDefaultGetOptions(),
-        ...options
-    })
-);
+    const isGetRequest = settings.method === 'GET';
 
-export const hPost = (url, body = {}, options = {}) => (
-    fetchJson(mapUriToBaseUrl(url), {
-        ...getDefaultPostOptions(body),
-        ...options
-    })
-);
+    if (data) {
+        if (isGetRequest) {
+            const params = Object.keys(data);
+            const finalUrl = `${url}${url.includes('?') ? '&' : '?'}${toQueryParams(params)}`;
+            return fetchAndCheck(mapUriToBaseUrl(finalUrl), { ...settings, ...options });
+        }
+        settings.body = JSON.stringify(data);
+    }
+
+    return fetchAndCheck(mapUriToBaseUrl(url), { ...settings, ...options }).then(toJson);
+};
+
+export const hGet = (url, data, options = {}) => request('GET', url, data, options);
+export const hPost = (url, data, options = {}) => request('POST', url, data, options);
+export const hPut = (url, data, options = {}) => request('PUT', url, data, options);
+export const hPatch = (url, data, options = {}) => request('PATCH', url, data, options);
+export const hDelete = (url, data, options = {}) => request('DELETE', url, data, options);

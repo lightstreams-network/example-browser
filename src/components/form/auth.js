@@ -41,14 +41,14 @@ const AuthForm = ({ url, handleSubmit }) => (
 
 const mapStateToProps = (state) => {
     return {
-        auth: null
+        user: null
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         handleSubmit(url, { email, password }) {
-            if (url.indexOf('register') !== -1) {
+            if (url.includes('register')) {
                 return dispatch(createUser({ username: email, password }));
             }
 

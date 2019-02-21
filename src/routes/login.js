@@ -8,9 +8,7 @@ const Login = () => (
             <Title>
                 <span role='img' aria-label='login'>🔑</span> Login
             </Title>
-
             <AuthForm url='/login' />
-
             <StyledLink to='/register'>Don&apos;t have an account? Request an invite</StyledLink>
             <StyledLink to='/'>Back</StyledLink>
         </Wrapper>
