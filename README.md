@@ -1,24 +1,4 @@
-
-<h1 align="center">
-<br>
-  <a href="https://github.com/leonardomso/react-bolt"><img src="https://i.imgur.com/GpQk5wG.png" alt="React Bolt" width=128"></a>
-<br>
-<br>
-React Bolt
-</h1>
-
-<p align="center">The best boilerplate for your React projects.</p>
-
-<p align="center">
-  <a href="http://makeapullrequest.com">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome">
-  </a>
-  <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License MIT">
-  </a>
-</p>
-
-<hr />
+# Fanbase invite app
 
 ## Introduction
 
