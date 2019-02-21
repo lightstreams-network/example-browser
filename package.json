@@ -1,7 +1,7 @@
 {
-    "name": "react-bolt",
+    "name": "fanbase-invite-app",
     "version": "1.0.0",
-    "description": "⚡ The most simple & robust boilerplate for your React projects.",
+    "description": "📢 Fanbase member recruitment app 📢",
     "main": "src/index.js",
     "scripts": {
         "start": "cross-env NODE_ENV=development webpack-dev-server --open",
@@ -24,19 +24,20 @@
         "starter",
         "boilerplate"
     ],
-    "author": "Leonardo Maldonado <leonardomso11@gmail.com>",
-    "license": "MIT",
+    "author": "Andrew Zappella <andrew.zappella@gmail.com>",
+    "license": "UNLICENSED",
+    "private": true,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/leonardomso/react-bolt.git"
+        "url": "git+https://github.com/lightstreams-network/fanbase-invite-app.git"
     },
     "bugs": {
-        "url": "https://github.com/leonardomso/react-bolt/issues"
+        "url": "https://github.com/lightstreams-network/fanbase-invite-app/issues"
     },
     "homepage": "https://github.com/leonardomso/react-bolt#readme",
     "devDependencies": {
         "@babel/cli": "^7.2.3",
-        "@babel/core": "^7.2.2",
+        "@babel/core": "^7.3.3",
         "@babel/node": "^7.2.2",
         "@babel/plugin-proposal-class-properties": "^7.3.0",
         "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
@@ -71,12 +72,10 @@
         "img-loader": "^3.0.1",
         "jest": "^24.0.0",
         "jest-dom": "^3.0.1",
-        "node-sass": "^4.10.0",
         "postcss-loader": "^3.0.0",
         "prettier": "^1.16.1",
         "react-testing-library": "^5.3.1",
         "redux-logger": "^3.0.6",
-        "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
         "url-loader": "^1.1.2",
         "webpack": "^4.29.0",
@@ -87,6 +86,8 @@
     },
     "dependencies": {
         "cross-env": "^5.2.0",
+        "formik": "^1.5.1",
+        "lodash.get": "^4.4.2",
         "react": "^16.7.0-alpha.0",
         "react-dom": "^16.7.0-alpha.0",
         "react-redux": "^6.0.0",
