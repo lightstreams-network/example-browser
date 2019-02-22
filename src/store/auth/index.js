@@ -36,15 +36,18 @@ export function fetchToken({ username, password }) {
     return (dispatch) => {
         dispatch(requestToken(username, password));
 
-        return hPost('/login', { username, password }).then((response) => {
-            dispatch(receiveToken(response.token));
-            dispatch(receiveUser(response.user));
-            return response.token;
-        })
-        .catch((error) => {
-            dispatch(receiveAuthError(error.response.statusText));
-            throw error;
-        });
+        dispatch(receiveToken('sometoken'));
+        dispatch(receiveUser({ id: 1, fullName: 'Andrew', email: 'a@fanbase.live'}));
+
+        // return hPost('/login', { username, password }).then((response) => {
+        //     dispatch(receiveToken(response.token));
+        //     dispatch(receiveUser(response.user));
+        //     return response.token;
+        // })
+        // .catch((error) => {
+        //     dispatch(receiveAuthError(error.response.statusText));
+        //     throw error;
+        // });
     }
 }
 
@@ -162,4 +165,4 @@ export default function authReducer(state = initialState, action = {}) {
 
 
 export const getAuthenticatedUser = (state) => get(state, ['auth', 'user'], null)
-export const isUserAuthenticated = (state) => getAuthenticatedUser(state) !== null;
+export const isAuthenticated = (state) => getAuthenticatedUser(state) !== null;

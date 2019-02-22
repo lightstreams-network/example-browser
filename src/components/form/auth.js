@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { fetchToken, createUser } from '../../store/auth';
+import { fetchToken, createUser, getAuthenticatedUser } from '../../store/auth';
 
 const AuthForm = ({ url, handleSubmit }) => (
     <Formik
@@ -41,7 +41,7 @@ const AuthForm = ({ url, handleSubmit }) => (
 
 const mapStateToProps = (state) => {
     return {
-        user: null
+        user: getAuthenticatedUser(state)
     };
 };
 

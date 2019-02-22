@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { isAuthenticated, clearStoredState } from '../../store/auth';
 
 const IfAuthComponent = ({ children, isAuthenticated, something }) => (
     <Fragment>
@@ -46,12 +47,16 @@ const IfNotAuthRedirectToComponent = ({ route,children, isAuthenticated }) => (
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: true
+        isAuthenticated: isAuthenticated(state)
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        clearStorage() {
+            dispatch(clearStoredState());
+        }
+    };
 };
 
 export const IfAuth = connect(mapStateToProps, mapDispatchToProps)(IfAuthComponent);

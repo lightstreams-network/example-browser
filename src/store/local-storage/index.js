@@ -1,9 +1,9 @@
 
-import { LOCAL_STORAGE_NS } from '../../constants';
+import { LOCAL_STORAGE_NAMESPACE } from '../../constants';
 
 export const loadState = () => {
     try {
-        const serializedState = localStorage.getItem(LOCAL_STORAGE_NS);
+        const serializedState = localStorage.getItem(LOCAL_STORAGE_NAMESPACE);
         if (serializedState === null) {
             return undefined;
         }
@@ -11,22 +11,21 @@ export const loadState = () => {
     } catch (err) {
         return undefined;
     }
-}
+};
 
 export const saveState = (state) => {
     try {
         const serializedState = JSON.stringify(state);
-        localStorage.setItem(LOCAL_STORAGE_NS, serializedState);
+        return localStorage.setItem(LOCAL_STORAGE_NAMESPACE, serializedState);
     } catch (err) {
         return undefined;
     }
-}
-
+};
 
 export const clearState = () => {
     try {
-        localStorage.removeItem(LOCAL_STORAGE_NS);
+        return localStorage.removeItem(LOCAL_STORAGE_NAMESPACE);
     } catch (err) {
         return undefined;
     }
-}
+};
