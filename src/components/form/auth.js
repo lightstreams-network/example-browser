@@ -1,7 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import styled from 'styled-components';
+import { TextAlignCenter, Button } from '../elements';
 import { fetchToken, createUser, getAuthenticatedUser } from '../../store/auth';
+
+const isLogin = (url) => url.includes('login');
+const StyledField = styled(Field)`
+    border: 1px solid #efefef;
+    padding: 20px;
+    display: block;
+    width: 300px;
+`;
+const StyledErrorMessage = styled(ErrorMessage)`
+    color: #ec4c47;
+`;
+
+const Actions = styled.div`
+    text-align: center;
+    margin: 30px 0;
+`;
 
 const AuthForm = ({ url, handleSubmit }) => (
     <Formik
@@ -25,13 +43,15 @@ const AuthForm = ({ url, handleSubmit }) => (
     >
         {({ isSubmitting }) => (
             <Form>
-                <Field type='email' name='email' placeholder='Email' />
-                <ErrorMessage name='email' component='div' />
-                <Field type='password' name='password' placeholder='Password' />
-                <ErrorMessage name='password' component='div' />
-                <button type='submit' disabled={ isSubmitting }>
-                    Submit
-                </button>
+                <StyledField type='email' name='email' placeholder='Email' />
+                <StyledErrorMessage name='email' component='div' />
+                <StyledField type='password' name='password' placeholder='Password' />
+                <StyledErrorMessage name='password' component='div' />
+                <Actions>
+                    <Button type='submit' disabled={ isSubmitting }>
+                        {isLogin(url) ? 'Login' : 'Request an invite'}
+                    </Button>
+                </Actions>
             </Form>
         )}
     </Formik>

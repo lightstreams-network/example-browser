@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+export const TextAlignCenter = styled.div`
+    text-align: center;
+`;
+
 export const Container = styled.div`
     display: flex;
     align-items: center;
@@ -23,6 +27,7 @@ export const Title = styled.h1`
     color: black;
     font-size: 2.5rem;
     font-weight: 700;
+    margin: 20px 0;
 `;
 
 export const Paragraph = styled.p`
@@ -36,4 +41,22 @@ export const StyledLink = styled(Link)`
 
 export const Input = styled.input`
     border: 1px solid #efefef;
+    padding: 20px;
+`;
+
+export const Button = styled.button`
+    background: #45ba82;
+    padding: 15px 30px;
+    border-radius: 5px;
+    border-right: 2px solid #2e7c56;
+    border-bottom: 2px solid #2e7c56;
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+
+    &:active {
+        border-right: 2px solid transparent;
+        border-bottom: 2px solid transparent;
+    }
 `;
