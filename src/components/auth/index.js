@@ -1,66 +1,64 @@
-import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { isAuthenticated, clearStoredState } from '../../store/auth';
+import AuthConnect from './container';
+import { ROUTE_HOME, ROUTE_DASHBOARD } from '../../constants';
 
-const IfAuthRenderComponent = ({ children, isAuthenticated }) => (
-    <Fragment>
-        { isAuthenticated ?
-            children
-            :
-            null
+export const IfAuth = ({ children }) => (
+    <AuthConnect>
+        { ({ isAuthenticated }) =>
+            isAuthenticated ? children : null
         }
-    </Fragment>
+    </AuthConnect>
 );
 
-const IfNotAuthRenderComponent = ({ children, isAuthenticated }) => (
-    <Fragment>
-        { !isAuthenticated ?
-            children
-            :
-            null
+export const IfNotAuth = ({ children }) => (
+    <AuthConnect>
+        { ({ isAuthenticated }) =>
+            !isAuthenticated ? children : null
         }
-    </Fragment>
+    </AuthConnect>
 );
 
-const IfAuthRedirectToRoute = ({ route, children, isAuthenticated, ...props}) => (
-    <Fragment>
-        { isAuthenticated ?
-            <Redirect to={route} />
-            :
-            children(props)
-        }
-    </Fragment>
+export const IfAuthRedirectTo = ({ route, children }) => (
+    <AuthConnect>
+        {({ isAuthenticated, ...props }) => {
+            return isAuthenticated ? <Redirect to={route} /> : children(props);
+        }}
+    </AuthConnect>
 );
 
-const IfNotAuthRedirectToRoute = ({ route,children, isAuthenticated, ...props }) => (
-    <Fragment>
-        { !isAuthenticated ?
-            <Redirect to={route} />
-            :
-            children(props)
-        }
-    </Fragment>
+export const IfNotAuthRedirectTo = ({ route, children }) => (
+    <AuthConnect>
+        {({ isAuthenticated, ...props }) => {
+            return !isAuthenticated ? <Redirect to={route} /> : children(props)
+        }}
+    </AuthConnect>
 );
 
-// https://frontarm.com/james-k-nelson/passing-data-props-children/
-
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: isAuthenticated(state)
-    };
+const propTypes = {
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ]).isRequired
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        clearStorage() {
-            dispatch(clearStoredState());
-        }
-    };
+IfAuth.propTypes = propTypes;
+IfNotAuth.propTypes = propTypes;
+IfAuthRedirectTo.propTypes = {
+    ...propTypes,
+    route: PropTypes.string
+};
+IfNotAuthRedirectTo.propTypes = {
+    ...propTypes,
+    route: PropTypes.string
 };
 
-export const IfAuth = connect(mapStateToProps, mapDispatchToProps)(IfAuthRenderComponent);
-export const IfNotAuth = connect(mapStateToProps, mapDispatchToProps)(IfNotAuthRenderComponent);
-export const IfAuthRedirectTo = connect(mapStateToProps, mapDispatchToProps)(IfAuthRedirectToRoute);
-export const IfNotAuthRedirectTo = connect(mapStateToProps, mapDispatchToProps)(IfNotAuthRedirectToRoute);
+IfAuthRedirectTo.defaultProps = {
+    route: ROUTE_HOME
+};
+
+IfNotAuthRedirectTo.defaultProps = {
+    route: ROUTE_DASHBOARD
+};
 

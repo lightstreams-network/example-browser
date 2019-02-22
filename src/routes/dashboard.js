@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Container, Wrapper, Title, Paragraph, StyledLink } from '../components/elements';
 import { IfNotAuthRedirectTo } from '../components/auth';
 import { ROUTE_LOGIN } from '../constants';
