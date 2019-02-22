@@ -1,6 +1,8 @@
 import { hGet, hPost } from '../../lib/fetch';
 import  get from 'lodash.get';
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 const initialState = {
     user: null
 };
@@ -36,8 +38,12 @@ export function fetchToken({ username, password }) {
     return (dispatch) => {
         dispatch(requestToken(username, password));
 
-        dispatch(receiveToken('sometoken'));
-        dispatch(receiveUser({ id: 1, fullName: 'Andrew', email: 'a@fanbase.live'}));
+        debugger;
+
+        return delay(2000).then(() => {
+            dispatch(receiveToken('sometoken'));
+            dispatch(receiveUser({ id: 1, fullName: 'Andrew', email: 'a@fanbase.live'}));
+        });
 
         // return hPost('/login', { username, password }).then((response) => {
         //     dispatch(receiveToken(response.token));

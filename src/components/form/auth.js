@@ -18,11 +18,9 @@ const AuthForm = ({ url, handleSubmit }) => (
             return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-            handleSubmit(url, values);
-            setTimeout(() => {
-                alert(JSON.stringify({ url, values }, null, 2));
+            handleSubmit(url, values).then(() => {
                 setSubmitting(false);
-            }, 400);
+            });
         }}
     >
         {({ isSubmitting }) => (

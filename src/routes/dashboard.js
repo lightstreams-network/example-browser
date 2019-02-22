@@ -4,20 +4,22 @@ import { Container, Wrapper, Title, Paragraph, StyledLink } from '../components/
 import { IfNotAuthRedirectTo } from '../components/auth';
 import { ROUTE_LOGIN } from '../constants';
 
-const Dashboard = ({ clearStorage }) => (
+const Dashboard = () => (
     <IfNotAuthRedirectTo route={ROUTE_LOGIN}>
-        <Container>
-            <Wrapper>
-                <Title>Dashboard</Title>
-                <Paragraph>Welcome user</Paragraph>
-                <StyledLink onClick={() => clearStorage()}>Logout</StyledLink>
-            </Wrapper>
-        </Container>
+        {({ clearStorage }) => (
+            <Container>
+                <Wrapper>
+                    <Title>Dashboard</Title>
+                    <Paragraph>Welcome user</Paragraph>
+                    <StyledLink onClick={(e) => {
+                        e.preventDefault();
+                        clearStorage();
+                    }} to='/logout'>Logout
+                    </StyledLink>
+                </Wrapper>
+            </Container>
+        )}
     </IfNotAuthRedirectTo>
 );
-
-Dashboard.propTypes = {
-    clearStorage: PropTypes.func.isRequired
-};
 
 export default Dashboard;

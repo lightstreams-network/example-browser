@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { isAuthenticated, clearStoredState } from '../../store/auth';
 
-const IfAuthComponent = ({ children, isAuthenticated, something }) => (
+const IfAuthRenderComponent = ({ children, isAuthenticated }) => (
     <Fragment>
         { isAuthenticated ?
             children
@@ -13,7 +13,7 @@ const IfAuthComponent = ({ children, isAuthenticated, something }) => (
     </Fragment>
 );
 
-const IfNotAuthComponent = ({ children, isAuthenticated }) => (
+const IfNotAuthRenderComponent = ({ children, isAuthenticated }) => (
     <Fragment>
         { !isAuthenticated ?
             children
@@ -23,22 +23,22 @@ const IfNotAuthComponent = ({ children, isAuthenticated }) => (
     </Fragment>
 );
 
-const IfAuthRedirectToComponent = ({ route, children, isAuthenticated }) => (
+const IfAuthRedirectToRoute = ({ route, children, isAuthenticated, ...props}) => (
     <Fragment>
         { isAuthenticated ?
             <Redirect to={route} />
             :
-            children
+            children(props)
         }
     </Fragment>
 );
 
-const IfNotAuthRedirectToComponent = ({ route,children, isAuthenticated }) => (
+const IfNotAuthRedirectToRoute = ({ route,children, isAuthenticated, ...props }) => (
     <Fragment>
         { !isAuthenticated ?
             <Redirect to={route} />
             :
-            children
+            children(props)
         }
     </Fragment>
 );
@@ -59,8 +59,8 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export const IfAuth = connect(mapStateToProps, mapDispatchToProps)(IfAuthComponent);
-export const IfNotAuth = connect(mapStateToProps, mapDispatchToProps)(IfNotAuthComponent);
-export const IfAuthRedirectTo = connect(mapStateToProps, mapDispatchToProps)(IfAuthRedirectToComponent);
-export const IfNotAuthRedirectTo = connect(mapStateToProps, mapDispatchToProps)(IfNotAuthRedirectToComponent);
+export const IfAuth = connect(mapStateToProps, mapDispatchToProps)(IfAuthRenderComponent);
+export const IfNotAuth = connect(mapStateToProps, mapDispatchToProps)(IfNotAuthRenderComponent);
+export const IfAuthRedirectTo = connect(mapStateToProps, mapDispatchToProps)(IfAuthRedirectToRoute);
+export const IfNotAuthRedirectTo = connect(mapStateToProps, mapDispatchToProps)(IfNotAuthRedirectToRoute);
 

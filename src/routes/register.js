@@ -11,18 +11,20 @@ import { ROUTE_DASHBOARD } from '../constants';
 
 const Register = () => (
     <IfAuthRedirectTo route={ROUTE_DASHBOARD}>
-        <Container>
-            <Wrapper>
-                <Title>
-                	<span role='img' aria-label='register'>⚒️ </span>
-                    Request an invite
-                    <span role='img' aria-label='register'> ⚒️</span>
-                </Title>
-                <AuthForm url='/register' />
-                <StyledLink to='/login'>Already have an account? Login</StyledLink>
-                <StyledLink to='/'>Back</StyledLink>
-            </Wrapper>
-        </Container>
+        {() => (
+            <Container>
+                <Wrapper>
+                    <Title>
+                        <span role='img' aria-label='register'>⚒️ </span>
+                        Request an invite
+                        <span role='img' aria-label='register'> ⚒️</span>
+                    </Title>
+                    <AuthForm url='/register' />
+                    <StyledLink to='/login'>Already have an account? Login</StyledLink>
+                    <StyledLink to='/'>Back</StyledLink>
+                </Wrapper>
+            </Container>
+        )}
     </IfAuthRedirectTo>
 );
 
