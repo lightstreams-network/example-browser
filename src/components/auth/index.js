@@ -39,7 +39,8 @@ export const IfNotAuthRedirectTo = ({ route, children }) => (
 const propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
+        PropTypes.func
     ]).isRequired
 };
 

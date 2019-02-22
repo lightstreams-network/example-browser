@@ -38,11 +38,9 @@ export function fetchToken({ username, password }) {
     return (dispatch) => {
         dispatch(requestToken(username, password));
 
-        debugger;
-
         return delay(2000).then(() => {
             dispatch(receiveToken('sometoken'));
-            dispatch(receiveUser({ id: 1, fullName: 'Andrew', email: 'a@fanbase.live'}));
+            dispatch(receiveUser({ id: 1, fullName: 'Fan Base', email: 'fb@fanbase.live'}));
         });
 
         // return hPost('/login', { username, password }).then((response) => {
