@@ -8,7 +8,6 @@ const reset = css`
     }
 
     * {
-        user-select: none;
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
         -webkit-tap-highlight-color: transparent;
         box-sizing: inherit;
@@ -33,8 +32,6 @@ const reset = css`
     h6,
     p {
         margin: 0;
-        font-size: 1rem;
-        font-weight: 400;
     }
 
     base,
@@ -54,15 +51,6 @@ const reset = css`
     a {
         text-decoration: none;
         color: inherit;
-    }
-
-    b {
-        font-weight: 400;
-    }
-
-    em,
-    i {
-        font-style: normal;
     }
 
     a:focus,
