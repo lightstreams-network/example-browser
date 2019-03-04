@@ -21,41 +21,46 @@ const Actions = styled.div`
     margin: 30px 0;
 `;
 
-const AuthForm = ({ url, handleSubmit }) => (
-    <Formik
-        initialValues={{ email: '', password: '' }}
-        validate={values => {
-            const errors = {};
-            if (!values.email) {
-                errors.email = 'Email address is missing';
-            } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-                errors.email = 'We need a real email address';
-            }
-            return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-            handleSubmit(url, values).then(() => {
-                setSubmitting(false);
-            });
-        }}
-    >
-        {({ isSubmitting }) => (
-            <Form>
-                <StyledField type='email' name='email' placeholder='Email' />
-                <StyledErrorMessage name='email' component='div' />
-                <StyledField type='password' name='password' placeholder='Password' />
-                <StyledErrorMessage name='password' component='div' />
-                <Actions>
-                    <Button type='submit' disabled={ isSubmitting }>
-                        {isLogin(url) ? 'Login' : 'Request an invite'}
-                    </Button>
-                </Actions>
-            </Form>
-        )}
-    </Formik>
-);
+const AuthForm = ({ url, handleSubmit }) => {
+    const buttonText = (isLogin(url) ? 'Sign in' : 'Request an invite');
+    const buttonTextSubmitting = (isLogin(url) ? 'Signing in' : 'Requesting an invite');
+
+    return (
+        <Formik
+            initialValues={{ email: '', password: '' }}
+            validate={values => {
+                const errors = {};
+                if (!values.email) {
+                    errors.email = 'Email address is missing';
+                } else if (
+                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                ) {
+                    errors.email = 'We need a real email address';
+                }
+                return errors;
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+                handleSubmit(url, values).then(() => {
+                    setSubmitting(false);
+                });
+            }}
+        >
+            {({ isSubmitting }) => (
+                <Form>
+                    <StyledField type='email' name='email' placeholder='Email' />
+                    <StyledErrorMessage name='email' component='div' />
+                    <StyledField type='password' name='password' placeholder='Password' />
+                    <StyledErrorMessage name='password' component='div' />
+                    <Actions>
+                        <Button type='submit' disabled={ isSubmitting }>
+                            {isSubmitting ? buttonTextSubmitting : buttonText}
+                        </Button>
+                    </Actions>
+                </Form>
+            )}
+        </Formik>
+    );
+};
 
 const mapStateToProps = (state) => {
     return {

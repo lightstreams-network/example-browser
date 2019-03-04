@@ -12,6 +12,7 @@ export const Container = styled.div`
     width: 100%;
     height: 100vh;
     font-family: 'Open Sans', sans-serif;
+    background: #f6f2ef;
 `;
 
 export const Wrapper = styled.div`
@@ -58,5 +59,12 @@ export const Button = styled.button`
     &:active {
         border-right: 2px solid transparent;
         border-bottom: 2px solid transparent;
+    }
+
+    &:disabled {
+        background: #c1e8d5;
+        border-right: 2px solid transparent;
+        border-bottom: 2px solid transparent;
+        cursor: wait;
     }
 `;
