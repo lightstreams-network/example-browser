@@ -84,6 +84,7 @@
         "webpack-merge": "^4.1.5"
     },
     "dependencies": {
+        "copy-to-clipboard": "^3.0.8",
         "cross-env": "^5.2.0",
         "formik": "^1.5.1",
         "lodash.get": "^4.4.2",
