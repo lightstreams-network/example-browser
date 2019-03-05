@@ -7,11 +7,10 @@ export const TextAlignCenter = styled.div`
 
 export const Container = styled.div`
     display: flex;
-    align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100vh;
-    font-family: 'Open Sans', sans-serif;
+    min-height: 100vh;
+    font-family: 'Lato', sans-serif;
     background: #f6f2ef;
 `;
 
@@ -19,9 +18,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
-    width: 1200px;
-    height: 40%;
+    width: 992px;
 `;
 
 export const Title = styled.h1`
