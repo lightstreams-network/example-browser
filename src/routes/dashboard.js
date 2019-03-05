@@ -5,17 +5,94 @@ import PropTypes from 'prop-types';
 import { Container, Wrapper, StyledLink } from '../components/elements';
 import { IfNotAuthRedirectTo } from '../components/auth';
 import { ROUTE_LOGIN } from '../constants';
+import fanbaseLogo from '../img/fanbase-logo.svg';
+import notificationImg from '../img/notification.svg';
+
+const Header = styled.div`
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+
+    & a {
+        display: block;
+    }
+`;
+
+const Flex = styled.div`
+    display: flex;
+`;
+
+const Pill = styled.button`
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    background-color: #fff;
+    margin: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.32);
+    outline: 0;
+
+    &.green {
+        background-color: #3affc9;
+    }
+
+    &:active {
+        box-shadow: none;
+    }
+
+    &:active,
+    &:focus,
+    &::-moz-focus-inner {
+        outline: 0;
+        border: 0;
+    }
+
+    &.small {
+        width: 34px;
+        height: 34px;
+    }
+`;
+
+const Intro = styled.div`
+    width: 75%;
+    padding-bottom: 15px;
+`;
+
+const H2 = styled.h2`
+    font-size: 32px;
+    margin-bottom: 6px;
+
+    &.tl {
+        text-align: left;
+    }
+`;
 
 const H3 = styled.h3`
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 21px;
     color: #302351;
+
+    &.fw4 {
+        font-weight: 400;
+    }
+
+    &.mb {
+        margin-bottom: 6px;
+    }
 `;
 
 const H4 = styled.h4`
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 36px;
     color: #302351;
+
+    &.mv {
+        margin: 10px 0;
+    }
 `;
 
 const P = styled.p`
@@ -23,7 +100,21 @@ const P = styled.p`
     margin: 15px 0;
     font-weight: ${props => props.bold ? '700' : '400'}
 
+    & .thin {
+        font-weight: 300;
+    }
+
     & .em {
+        font-weight: 700;
+    }
+`;
+
+const Span = styled.span`
+    &.thin {
+        font-weight: 300;
+    }
+
+    &.em {
         font-weight: 700;
     }
 `;
@@ -31,18 +122,18 @@ const P = styled.p`
 const Box = styled.div`
     background: #fff;
     width: 75%;
-    box-shadow: 0 0 3px rgba(18, 18, 18, 0.3);
-    border-radius: 10px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.32);
+    border-radius: 6px;
 `;
 
 const Section = styled.div`
-    padding: 40px;
+    padding: 30px;
     border-bottom: 1px solid #f5f5f5;
 `;
 
 const Input = styled.input`
     border: 1px solid #312452;
-    border-radius: 40px;
+    border-radius: 100px;
     padding: 15px 30px;
     width: 75%;
     margin-right: 10px
@@ -70,17 +161,22 @@ const CopyToClipboard = ({ initialText }) => {
 
     return (
         <Fragment>
-            <Input ref={inputRef} onFocus={(e) => {
-                e.target.select();
-            }} value={text} readOnly />
-            <Button onClick={() => {
-                inputRef.current.focus();
-                copy(text);
-                setTextCopied(true);
-                setTimeout(() => {
-                    setTextCopied(false);
-                }, 300);
-            }} disabled={ textCopied }>{textCopied ? 'Copied' : 'Copy'}</Button>
+            <Flex>
+                <Input ref={inputRef} onFocus={(e) => {
+                    e.target.select();
+                }} value={text} readOnly />
+                <Button
+                    onClick={() => {
+                        inputRef.current.focus();
+                        copy(text);
+                        setTextCopied(true);
+                        setTimeout(() => {
+                            setTextCopied(false);
+                        }, 300);
+                    }}
+                    disabled={ textCopied }>{textCopied ? 'Copied' : 'Copy'}
+                </Button>
+            </Flex>
         </Fragment>
     );
 };
@@ -100,19 +196,19 @@ const SocialShare = styled(
                 <P>Or share with:</P>
                 <ul>
                     <li>
-                        <a href='/#whatsapp'>WA</a>
+                        <a href='/#whatsapp'><img src={require('../img/whatsapp.png')} alt="Share on WhatsApp"/></a>
                     </li>
                     <li>
-                        <a href='/#facebook'>FB</a>
+                        <a href='/#facebook'><img src={require('../img/facebook.png')} alt="Share on Facebook"/></a>
                     </li>
                     <li>
-                        <a href='/#twitter'>TW</a>
+                        <a href='/#twitter'><img src={require('../img/twitter.png')} alt="Share on Twitter"/></a>
                     </li>
                     <li>
-                        <a href='/#linkedin'>LI</a>
+                        <a href='/#linkedin'><img src={require('../img/linkedin.png')} alt="Share on Linkedin"/></a>
                     </li>
                     <li>
-                        <a href='/#email'>EM</a>
+                        <a href='/#email'><img src={require('../img/email.png')} alt="Share via Email"/></a>
                     </li>
                 </ul>
             </div>
@@ -121,10 +217,12 @@ const SocialShare = styled(
 )`
     display: flex;
     justify-content: space-between;
+    padding-top: 25px;
 
     & ul {
         list-style-type: none;
         display: flex;
+        flex-wrap: wrap;
     }
 
     & li a {
@@ -161,17 +259,28 @@ const Dashboard = () => (
         {({ clearStorage }) => (
             <Container>
                 <Wrapper>
+                    <Header>
+                        <a href="/"><img src={fanbaseLogo} alt="Fanbase"/></a>
+                        <Flex>
+                            <Pill className='green'>EG</Pill>
+                            <Pill><img src={notificationImg} alt="Notifications"/></Pill>
+                        </Flex>
+                    </Header>
+                    <Intro>
+                        <H2>Welcome Edi</H2>
+                        <H3 className='fw4'>Fanbase helps fans support their favorite artists and get rewarded for their passion.</H3>
+                    </Intro>
                     <Box>
                         <Section>
                             <H3>Current tasks</H3>
-                            <P>Invite people you know to secure an additional <span>PHT</span> 2500 </P>
+                            <P>Invite people you know to secure an additional <span className='thin'>PHT</span> <span className='em'>2500</span></P>
                             <CopyToClipboard initialText='https://fanbase.live/invite/abd1239813' />
                             <SocialShare />
                         </Section>
                         <Section>
                             <H3>Current balance</H3>
-                            <H4>PHT 500</H4>
-                            <P>Out of your possible PHT 3,000</P>
+                            <H4 className='mv'><Span className='thin'>PHT</Span> 500</H4>
+                            <P>Out of your possible <span className='thin'>PHT</span> <span className='em'>3,000</span></P>
                             <ProgressBar width='15' />
                         </Section>
                         <Section>
