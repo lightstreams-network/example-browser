@@ -31,7 +31,7 @@ export const IfAuthRedirectTo = ({ route, children }) => (
 export const IfNotAuthRedirectTo = ({ route, children }) => (
     <AuthConnect>
         {({ isAuthenticated, ...props }) => {
-            return !isAuthenticated ? <Redirect to={route} /> : children(props)
+            return !isAuthenticated ? <Redirect to={route} /> : children(props);
         }}
     </AuthConnect>
 );

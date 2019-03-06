@@ -3,23 +3,25 @@ import AuthForm from '../components/form/auth';
 import {
     Container,
     Wrapper,
-    Title,
-    StyledLink
+    StyledLink,
+    Box,
+    Section
 } from '../components/elements';
+import Logo from '../components/logo';
 import { IfAuthRedirectTo } from '../components/auth';
 import { ROUTE_DASHBOARD } from '../constants';
 
 const Register = () => (
     <IfAuthRedirectTo route={ROUTE_DASHBOARD}>
         {() => (
-            <Container>
+            <Container className='vertical-center'>
                 <Wrapper>
-                    <Title>
-                        <span role='img' aria-label='register'>⚒️ </span>
-                        Request an invite
-                        <span role='img' aria-label='register'> ⚒️</span>
-                    </Title>
-                    <AuthForm url='/register' />
+                    <Logo className='big' url='/' />
+                    <Box className='w-50'>
+                        <Section className='pt'>
+                            <AuthForm url='/register' />
+                        </Section>
+                    </Box>
                     <StyledLink to='/login'>Already have an account? Login</StyledLink>
                     <StyledLink to='/'>Back</StyledLink>
                 </Wrapper>

@@ -107,14 +107,18 @@ export function createUser({ username, password }) {
     return (dispatch) => {
         dispatch(requestCreateUser());
 
-        return hPost('/register', { username, password }).then((response) => {
-            dispatch(receiveUser(response));
-            return response;
-        })
-        .catch((error) => {
-            dispatch(receiveAuthError(error.response.statusText));
-            throw error;
+        return delay(2000).then(() => {
+            dispatch(receiveUser({ id: 1, fullName: 'Fan Base', email: 'fb@fanbase.live'}));
         });
+
+        // return hPost('/register', { username, password }).then((response) => {
+        //     dispatch(receiveUser(response));
+        //     return response;
+        // })
+        // .catch((error) => {
+        //     dispatch(receiveAuthError(error.response.statusText));
+        //     throw error;
+        // });
     }
 }
 

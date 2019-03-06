@@ -2,23 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
-import { TextAlignCenter, Button } from '../elements';
 import { fetchToken, createUser, getAuthenticatedUser } from '../../store/auth';
+import { Button, Label } from '../elements';
 
 const isLogin = (url) => url.includes('login');
+
 const StyledField = styled(Field)`
-    border: 1px solid #efefef;
-    padding: 20px;
-    display: block;
-    width: 300px;
+    border: 1px solid var(--silver);
+    border-radius: 100px;
+    padding: 15px 30px;
+    width: 100%;
+    font-size: 21px;
 `;
 const StyledErrorMessage = styled(ErrorMessage)`
     color: #ec4c47;
+    padding-left: 30px;
 `;
 
 const Actions = styled.div`
     text-align: center;
-    margin: 30px 0;
 `;
 
 const AuthForm = ({ url, handleSubmit }) => {
@@ -47,10 +49,16 @@ const AuthForm = ({ url, handleSubmit }) => {
         >
             {({ isSubmitting }) => (
                 <Form>
-                    <StyledField type='email' name='email' placeholder='Email' />
-                    <StyledErrorMessage name='email' component='div' />
-                    <StyledField type='password' name='password' placeholder='Password' />
-                    <StyledErrorMessage name='password' component='div' />
+                    <Label>
+                        <span>Email</span>
+                        <StyledField type='email' name='email' placeholder='email@example.com' />
+                        <StyledErrorMessage name='email' component='div' />
+                    </Label>
+                    <Label>
+                        <span>Password</span>
+                        <StyledField type='password' name='password' placeholder='At least 8 characters' />
+                        <StyledErrorMessage name='password' component='div' />
+                    </Label>
                     <Actions>
                         <Button type='submit' disabled={ isSubmitting }>
                             {isSubmitting ? buttonTextSubmitting : buttonText}

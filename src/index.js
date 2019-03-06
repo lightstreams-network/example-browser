@@ -16,9 +16,10 @@ import Login from './routes/login';
 import Register from './routes/register';
 import Dashboard from './routes/dashboard';
 import NoMatch from './routes/404';
-import reset from './constants/css/reset';
+import reset from './css/reset';
+import styles from './css/styles';
 
-const GlobalStyle = createGlobalStyle`${reset}`;
+const GlobalStyle = createGlobalStyle`${reset}${styles}`;
 
 ReactDOM.render(
     <BrowserRouter>
