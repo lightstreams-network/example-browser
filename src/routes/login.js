@@ -1,7 +1,7 @@
 import React from 'react';
 import Logo from '../components/logo';
 import AuthForm from '../components/form/auth';
-import { Container, Wrapper, Title, StyledLink, Box, Section } from '../components/elements';
+import { Container, Wrapper, StyledLink, Box, Section } from '../components/elements';
 import { IfAuthRedirectTo } from '../components/auth';
 import { ROUTE_DASHBOARD } from '../constants';
 

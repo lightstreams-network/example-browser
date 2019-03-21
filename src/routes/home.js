@@ -2,6 +2,9 @@ import React from 'react';
 import { Container, Wrapper, Title, Paragraph, StyledLink } from '../components/elements';
 import { IfAuth, IfNotAuth, IfAuthRedirectTo } from '../components/auth';
 import { ROUTE_DASHBOARD } from '../constants';
+import {
+    FirebaseContext
+} from '../components/firebase';
 
 const Home = () => (
     <IfAuthRedirectTo route={ROUTE_DASHBOARD}>
@@ -13,6 +16,14 @@ const Home = () => (
                         <span>Fanbase</span>
                         <span role='img' aria-label='Fanbase'> 📢</span>
                     </Title>
+                    <FirebaseContext.Consumer>
+                        {/*
+                        (firebase) => {
+                            // console.log(firebase);
+                            return <div>Can use firebase here</div>;
+                        }
+                        */}
+                    </FirebaseContext.Consumer>
                     <IfAuth>
                         <StyledLink to='/dashboard'>Dashboard</StyledLink>
                     </IfAuth>

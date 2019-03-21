@@ -1,12 +1,12 @@
-# Fanbase invite app
+# Lightstreams Account Manager
 
 ## Introduction
 
-The fanbase invite app helps users register and invite other users. 
+The Lightstreams account manager helps users manage their account & wallet.
 
 ## Features
 
-This boilerplate features all the latest tools and practices in the industry.
+This app features the latest tools and best practices for development.
 
 - ⚛ **React** — 16.7.0-alpha.0 with Hooks
 - ♻ **Redux** — State Management
@@ -19,8 +19,8 @@ This boilerplate features all the latest tools and practices in the industry.
 
 ## Getting started
 
-1. Clone this repo using `https://github.com/lightstreams-network/fanbase-invite-app.git`
-2. Move to the appropriate directory: `cd fanbase-invite-app`.<br />
+1. Clone this repo using `https://github.com/lightstreams-network/account-manager.git`
+2. Move to the appropriate directory: `cd account-manager`.<br />
 3. Run `yarn` or `npm install` to install dependencies.<br />
 4. Run `npm start` to see the example app at `http://localhost:8080`.
 

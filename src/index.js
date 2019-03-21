@@ -10,6 +10,11 @@ import {
     ROUTE_DASHBOARD
 } from './constants';
 
+import {
+    firebaseApp,
+    FirebaseContext
+} from './components/firebase';
+
 import store from './store';
 import Home from './routes/home';
 import Login from './routes/login';
@@ -23,7 +28,7 @@ const GlobalStyle = createGlobalStyle`${reset}${styles}`;
 
 ReactDOM.render(
     <BrowserRouter>
-        <Fragment>
+        <FirebaseContext.Provider value={firebaseApp}>
             <Provider store={store}>
                 <Switch>
                     <Route exact path={ROUTE_HOME} component={Home} />
@@ -34,7 +39,7 @@ ReactDOM.render(
                 </Switch>
             </Provider>
             <GlobalStyle />
-        </Fragment>
+        </FirebaseContext.Provider>,
     </BrowserRouter>,
     document.getElementById('root')
 );

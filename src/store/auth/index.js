@@ -7,7 +7,7 @@ const initialState = {
     user: null
 };
 
-export const REQUEST_TOKEN = 'fanbase/auth/REQUEST_TOKEN';
+export const REQUEST_TOKEN = 'lsn/auth/REQUEST_TOKEN';
 export function requestToken(username, password) {
     return {
         type: REQUEST_TOKEN,
@@ -18,7 +18,7 @@ export function requestToken(username, password) {
     };
 };
 
-const RECEIVE_TOKEN = 'fanbase/auth/RECEIVE_TOKEN';
+const RECEIVE_TOKEN = 'lsn/auth/RECEIVE_TOKEN';
 function receiveToken(token) {
     return {
         type: RECEIVE_TOKEN,
@@ -26,7 +26,7 @@ function receiveToken(token) {
     }
 }
 
-const RECEIVE_AUTH_ERROR = 'fanbase/auth/RECEIVE_AUTH_ERROR';
+const RECEIVE_AUTH_ERROR = 'lsn/auth/RECEIVE_AUTH_ERROR';
 function receiveAuthError(error) {
     return {
         type: RECEIVE_AUTH_ERROR,
@@ -55,7 +55,7 @@ export function fetchToken({ username, password }) {
     }
 }
 
-const REQUEST_CREATE_USER = 'fanbase/auth/REQUEST_CREATE_USER';
+const REQUEST_CREATE_USER = 'lsn/auth/REQUEST_CREATE_USER';
 function requestCreateUser() {
     return {
         type: REQUEST_CREATE_USER,
@@ -63,7 +63,7 @@ function requestCreateUser() {
     };
 }
 
-const REQUEST_USER = 'fanbase/auth/REQUEST_USER';
+const REQUEST_USER = 'lsn/auth/REQUEST_USER';
 function requestUser() {
     return {
         type: REQUEST_USER,
@@ -71,7 +71,7 @@ function requestUser() {
     };
 }
 
-const RECEIVE_USER = 'fanbase/auth/RECEIVE_USER';
+const RECEIVE_USER = 'lsn/auth/RECEIVE_USER';
 function receiveUser(user) {
     return {
         type: RECEIVE_USER,
@@ -79,7 +79,7 @@ function receiveUser(user) {
     };
 }
 
-const CLEAR_STORED_STATE = 'fanbase/auth/CLEAR_STORED_STATE';
+const CLEAR_STORED_STATE = 'lsn/auth/CLEAR_STORED_STATE';
 export function clearStoredState() {
     return {
         type: CLEAR_STORED_STATE,
@@ -108,7 +108,7 @@ export function createUser({ username, password }) {
         dispatch(requestCreateUser());
 
         return delay(2000).then(() => {
-            dispatch(receiveUser({ id: 1, fullName: 'Fan Base', email: 'fb@fanbase.live'}));
+            dispatch(receiveUser({ id: 1, fullName: 'Lightstreams', email: 'notifications@lightstreams.io '}));
         });
 
         // return hPost('/register', { username, password }).then((response) => {
