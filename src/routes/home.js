@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Wrapper, Title, Paragraph, StyledLink } from '../components/elements';
+import { Container, Wrapper, Title, StyledLink } from '../components/elements';
 import { IfAuth, IfNotAuth, IfAuthRedirectTo } from '../components/auth';
 import { ROUTE_DASHBOARD } from '../constants';
 import {
@@ -12,9 +12,7 @@ const Home = () => (
             <Container>
                 <Wrapper>
                     <Title>
-                        <span role='img' aria-label='Fanbase'>📢 </span>
-                        <span>Fanbase</span>
-                        <span role='img' aria-label='Fanbase'> 📢</span>
+                        <span>Lightstreams</span>
                     </Title>
                     <FirebaseContext.Consumer>
                         {/*
@@ -29,9 +27,8 @@ const Home = () => (
                     </IfAuth>
                     <IfNotAuth>
                         <StyledLink to='/login'>Login</StyledLink>
-                        <StyledLink to='/register'>Request an invite</StyledLink>
+                        <StyledLink to='/register'>Register</StyledLink>
                     </IfNotAuth>
-                    <Paragraph>Fanbase helps artists and fans get rewarded for their passion.</Paragraph>
                 </Wrapper>
             </Container>
         )}
