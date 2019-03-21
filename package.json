@@ -86,6 +86,7 @@
     "dependencies": {
         "copy-to-clipboard": "^3.0.8",
         "cross-env": "^5.2.0",
+        "firebase": "^5.9.0",
         "formik": "^1.5.1",
         "lodash.get": "^4.4.2",
         "prop-types": "^15.7.2",
