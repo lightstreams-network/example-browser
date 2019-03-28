@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 const Logo = styled(
     ({ className, url }) => (
         <Link className={className} to={url}>
-            <img src={require('../../img/fanbase-logo.svg')} alt='Fanbase'/>
+            <img src={require('../../img/logo@2x.png')} alt='Fanbase'/>
         </Link>
     )
 )`
     &.big {
-        width: 80px;
-        height: 80px;
+        width: 135px;
+        height: 42px;
         margin-bottom: 40px;
     }
 

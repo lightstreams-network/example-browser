@@ -7,6 +7,7 @@ import {
     ROUTE_HOME,
     ROUTE_LOGIN,
     ROUTE_REGISTER,
+    ROUTE_RESET,
     ROUTE_DASHBOARD
 } from './constants';
 
@@ -19,6 +20,7 @@ import store from './store';
 import Home from './routes/home';
 import Login from './routes/login';
 import Register from './routes/register';
+import Reset from './routes/reset';
 import Dashboard from './routes/dashboard';
 import NoMatch from './routes/404';
 import reset from './css/reset';
@@ -35,6 +37,7 @@ ReactDOM.render(
                     <Route exact path={ROUTE_HOME} component={Home} />
                     <Route path={ROUTE_LOGIN} component={Login} />
                     <Route path={ROUTE_REGISTER} component={Register} />
+                    <Route path={ROUTE_RESET} component={Reset} />
                     <Route path={ROUTE_DASHBOARD} component={Dashboard} />
                     <Route component={NoMatch} />
                 </Switch>

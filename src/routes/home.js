@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Wrapper, Title, StyledLink } from '../components/elements';
+import { Container, Wrapper, StyledLink, Box, Section } from '../components/elements';
+import Logo from '../components/logo';
 import { IfAuth, IfNotAuth, IfAuthRedirectTo } from '../components/auth';
 import { ROUTE_DASHBOARD } from '../constants';
 
@@ -10,17 +11,14 @@ import { ROUTE_DASHBOARD } from '../constants';
 const Home = () => (
     <IfAuthRedirectTo route={ROUTE_DASHBOARD}>
         {() => (
-            <Container>
+            <Container className='vertical-center'>
                 <Wrapper>
-                    <Title>
-                        <span>Lightstreams</span>
-                    </Title>
+                    <Logo className='big' url='/' />
                     <IfAuth>
                         <StyledLink to='/dashboard'>Dashboard</StyledLink>
                     </IfAuth>
                     <IfNotAuth>
                         <StyledLink to='/login'>Login</StyledLink>
-                        <StyledLink to='/register'>Register</StyledLink>
                     </IfNotAuth>
                 </Wrapper>
             </Container>

@@ -1,14 +1,15 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isAuthenticated } from '../../store/auth';
+import { isAuthenticated, getAuthenticatedUser } from '../../store/auth';
 import { signOut } from '../../store/firebase';
 
 // see https://frontarm.com/james-k-nelson/passing-data-props-children/
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: isAuthenticated(state)
+        isAuthenticated: isAuthenticated(state),
+        user: getAuthenticatedUser(state)
     };
 };
 

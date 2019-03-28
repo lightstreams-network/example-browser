@@ -5,8 +5,7 @@ import { IfNotAuthRedirectTo } from '../components/auth';
 import Logo from '../components/logo';
 import CopyToClipboard from '../components/copy-to-clipboard';
 import Pill from '../components/pill';
-import SocialShare from '../components/social-share';
-import ProgressBar from '../components/progress-bar';
+import WalletInput from '../components/form/wallet';
 import {
     Container,
     Wrapper,
@@ -35,45 +34,40 @@ const Intro = styled.div`
     padding-bottom: 15px;
 `;
 
+const StyledA = styled.a`
+    color: var(--pink);
+`;
+
 const Dashboard = () => (
     <IfNotAuthRedirectTo route={ROUTE_LOGIN}>
-        {({ clearStorage }) => (
+        {({ clearStorage, user }) => (
             <Container>
                 <Wrapper>
                     <Header className='w-100 w-75-ns'>
-                        <Logo url='/' />
+                        <Logo className='big' url='/' />
                         <Flex>
-                            <Pill className='green'>EG</Pill>
-                            <Pill><img src={require('../img/notification.svg')} alt="Notifications"/></Pill>
+                            <StyledLink onClick={(e) => {
+                                e.preventDefault();
+                                clearStorage();
+                            }} to='/logout'>Logout
+                            </StyledLink>
                         </Flex>
                     </Header>
-                    <Intro className='w-100 w-75-ns'>
-                        <H2>Welcome Edi</H2>
-                        <H3 className='fw4'>Fanbase helps fans support their favorite artists and get rewarded for their passion.</H3>
-                    </Intro>
                     <Box>
                         <Section>
-                            <H3>Current tasks</H3>
-                            <P>Invite people you know to secure an additional <span className='thin'>PHT</span> <span className='em'>2500</span></P>
-                            <CopyToClipboard initialText='https://fanbase.live/invite/abd1239813' />
-                            <SocialShare />
+                            <H3>Welcome {user.first_name}</H3>
+                            <P>This page will let you set the wallet address where you will receive your PHT tokens.</P>
                         </Section>
                         <Section>
-                            <H3>Current balance</H3>
-                            <H4 className='mv'><Span className='thin'>PHT</Span> 500</H4>
-                            <P>Out of your possible <span className='thin'>PHT</span> <span className='em'>3,000</span></P>
-                            <ProgressBar width='15' />
+                            <H3>Your Wallet</H3>
+                            <P>Please make sure you have the private key for this address and that it is NOT a hardware or exchange wallet.</P>
+                            <WalletInput />
                         </Section>
                         <Section>
-                            <P><span className='em'>Your account has not been verified yet</span>. <a href="/#resend">Resend email?</a></P>
-                            <P>You will receive PHT 500 following verification</P>
+                            <P><span className='em'>Need help?</span> <StyledA href="https://medium.com/lightstreams/how-to-create-your-pht-wallet-e9233fb97937">Follow these instructions</StyledA></P>
                         </Section>
                     </Box>
-                    <StyledLink onClick={(e) => {
-                        e.preventDefault();
-                        clearStorage();
-                    }} to='/logout'>Logout
-                    </StyledLink>
+
                 </Wrapper>
             </Container>
         )}

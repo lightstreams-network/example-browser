@@ -4,7 +4,8 @@ import  get from 'lodash.get';
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const initialState = {
-    user: null
+    user: null,
+    error: null,
 };
 
 
@@ -161,7 +162,10 @@ export default function authReducer(state = initialState, action = {}) {
         case RECEIVE_USER:
             return {
                 ...state,
-                user: action.payload
+                user: {
+                    ...state.user,
+                    ...action.payload
+                }
             };
 
         case CLEAR_STORED_STATE:
@@ -175,3 +179,4 @@ export default function authReducer(state = initialState, action = {}) {
 
 export const getAuthenticatedUser = (state) => get(state, ['auth', 'user'], null)
 export const isAuthenticated = (state) => getAuthenticatedUser(state) !== null;
+export const getAuthErrors = (state) => get(state, ['auth', 'error'], null)

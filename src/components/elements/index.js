@@ -7,7 +7,7 @@ export const Container = styled.div`
     width: 100%;
     min-height: 100vh;
     font-family: 'Lato', sans-serif;
-    background: #f6f2ef;
+    background: #242e37;
 
     &.vertical-center {
         align-items: center;
@@ -22,19 +22,19 @@ export const Wrapper = styled.div`
 `;
 
 export const Title = styled.h1`
-    color: black;
+    color: #fff;
     font-size: 2.5rem;
     font-weight: 700;
     margin: 20px 0;
 `;
 
 export const Paragraph = styled.p`
-    color: black;
+    color: #fff;
     font-size: 1rem;
 `;
 
 export const StyledLink = styled(Link)`
-    color: var(--purple);
+    color: var(--pink);
 `;
 
 // export const Input = styled.input`
@@ -98,7 +98,7 @@ export const H3 = styled.h3`
 `;
 export const H4 = styled.h4`
     font-size: 36px;
-    color: var(--dark-purple);
+    color: #fff
 
     &.mv {
         margin: 10px 0;

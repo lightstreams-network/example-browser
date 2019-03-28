@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
-import { fetchToken, createUser, getAuthenticatedUser } from '../../store/auth';
+import { getAuthenticatedUser, getAuthErrors } from '../../store/auth';
 import { signInWithEmailAndPassword } from '../../store/firebase';
 import { Button, Label } from '../elements';
 
@@ -24,7 +24,7 @@ const Actions = styled.div`
     text-align: center;
 `;
 
-const AuthForm = ({ url, handleSubmit }) => {
+const AuthForm = ({ url, authErrors, handleSubmit }) => {
     const buttonText = (isLogin(url) ? 'Sign in' : 'Request an invite');
     const buttonTextSubmitting = (isLogin(url) ? 'Signing in' : 'Requesting an invite');
 
@@ -42,9 +42,15 @@ const AuthForm = ({ url, handleSubmit }) => {
                 }
                 return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {
-                handleSubmit(url, values);
-                setSubmitting(false);
+            onSubmit={(values, { setSubmitting, setErrors }) => {
+                handleSubmit(url, values, (error) => {
+                    setErrors({
+                        email: 'Email/password combination wrong',
+                        password: 'Email/password combination wrong'
+                    });
+                }).finally(() => {
+                    setSubmitting(false);
+                });
             }}
         >
             {({ isSubmitting }) => (
@@ -72,19 +78,15 @@ const AuthForm = ({ url, handleSubmit }) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: getAuthenticatedUser(state)
+        user: getAuthenticatedUser(state),
+        authErrors: getAuthErrors(state)
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleSubmit(url, { email, password }) {
-            if (url.includes('register')) {
-                return dispatch(createUser({ username: email, password }));
-            }
-
-            // return dispatch(fetchToken({ username: email, password }));
-            return dispatch(signInWithEmailAndPassword(email, password));
+        handleSubmit(url, { email, password }, errorCb) {
+            return dispatch(signInWithEmailAndPassword(email, password, errorCb));
         }
     };
 };
