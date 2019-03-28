@@ -7,6 +7,7 @@ const globalStyles = css`
         --purple: #855bf2;
         --silver: #ececec;
         --light-yellow: #fefae6;
+        --pink: #ff2855;
     }
 
     /* Width Scale */
