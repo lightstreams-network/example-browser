@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isAuthenticated, clearStoredState } from '../../store/auth';
+import { isAuthenticated } from '../../store/auth';
+import { signOut } from '../../store/firebase';
 
 // see https://frontarm.com/james-k-nelson/passing-data-props-children/
 
@@ -14,7 +15,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         clearStorage() {
-            dispatch(clearStoredState());
+            dispatch(signOut());
         }
     };
 };

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
 import { fetchToken, createUser, getAuthenticatedUser } from '../../store/auth';
+import { signInWithEmailAndPassword } from '../../store/firebase';
 import { Button, Label } from '../elements';
 
 const isLogin = (url) => url.includes('login');
@@ -42,9 +43,8 @@ const AuthForm = ({ url, handleSubmit }) => {
                 return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
-                handleSubmit(url, values).then(() => {
-                    setSubmitting(false);
-                });
+                handleSubmit(url, values);
+                setSubmitting(false);
             }}
         >
             {({ isSubmitting }) => (
@@ -83,7 +83,8 @@ const mapDispatchToProps = (dispatch) => {
                 return dispatch(createUser({ username: email, password }));
             }
 
-            return dispatch(fetchToken({ username: email, password }));
+            // return dispatch(fetchToken({ username: email, password }));
+            return dispatch(signInWithEmailAndPassword(email, password));
         }
     };
 };

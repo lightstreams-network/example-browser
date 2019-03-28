@@ -7,6 +7,7 @@ const initialState = {
     user: null
 };
 
+
 export const REQUEST_TOKEN = 'lsn/auth/REQUEST_TOKEN';
 export function requestToken(username, password) {
     return {
@@ -27,7 +28,7 @@ function receiveToken(token) {
 }
 
 const RECEIVE_AUTH_ERROR = 'lsn/auth/RECEIVE_AUTH_ERROR';
-function receiveAuthError(error) {
+export function receiveAuthError(error) {
     return {
         type: RECEIVE_AUTH_ERROR,
         payload: error
@@ -64,7 +65,7 @@ function requestCreateUser() {
 }
 
 const REQUEST_USER = 'lsn/auth/REQUEST_USER';
-function requestUser() {
+export function requestUser() {
     return {
         type: REQUEST_USER,
         payload: null
@@ -72,7 +73,7 @@ function requestUser() {
 }
 
 const RECEIVE_USER = 'lsn/auth/RECEIVE_USER';
-function receiveUser(user) {
+export function receiveUser(user) {
     return {
         type: RECEIVE_USER,
         payload: user

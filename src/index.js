@@ -10,10 +10,10 @@ import {
     ROUTE_DASHBOARD
 } from './constants';
 
-import {
-    firebaseApp,
-    FirebaseContext
-} from './components/firebase';
+// import {
+//     firebaseApp,
+//     FirebaseContext
+// } from './components/firebase';
 
 import store from './store';
 import Home from './routes/home';
@@ -23,13 +23,14 @@ import Dashboard from './routes/dashboard';
 import NoMatch from './routes/404';
 import reset from './css/reset';
 import styles from './css/styles';
+import Firebase from './components/firebase';
 
 const GlobalStyle = createGlobalStyle`${reset}${styles}`;
 
 ReactDOM.render(
     <BrowserRouter>
-        <FirebaseContext.Provider value={firebaseApp}>
-            <Provider store={store}>
+        <Provider store={store}>
+            <Firebase>
                 <Switch>
                     <Route exact path={ROUTE_HOME} component={Home} />
                     <Route path={ROUTE_LOGIN} component={Login} />
@@ -37,9 +38,9 @@ ReactDOM.render(
                     <Route path={ROUTE_DASHBOARD} component={Dashboard} />
                     <Route component={NoMatch} />
                 </Switch>
-            </Provider>
-            <GlobalStyle />
-        </FirebaseContext.Provider>,
+            </Firebase>
+        </Provider>
+        <GlobalStyle />
     </BrowserRouter>,
     document.getElementById('root')
 );
