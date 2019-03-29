@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
 import { getAuthenticatedUser } from '../../store/auth';
-import { updateWallet } from '../../store/firebase';
+import { updateWallet, getSubscriberId } from '../../store/firebase';
 import { Button, Label } from '../elements';
 import { isAddress } from '../../lib/checks';
 import { RESET_PASSWORD, FORM_SENDING } from '../../constants';
-
 
 const StyledField = styled(Field)`
     border: 1px solid var(--silver);
@@ -25,7 +24,7 @@ const Actions = styled.div`
     text-align: center;
 `;
 
-const Wallet = ({ url, handleSubmit }) => {
+const Wallet = ({ url, handleSubmit, subscriberId }) => {
     const buttonText = 'Update wallet address';
     const buttonTextSubmitting = FORM_SENDING;
 
@@ -44,23 +43,29 @@ const Wallet = ({ url, handleSubmit }) => {
                 return errors;
             }}
             onSubmit={(values, { setSubmitting, setErrors }) => {
-                handleSubmit(url, values);
+                handleSubmit(subscriberId, values);
                 setSubmitting(false);
             }}
         >
             {({ isSubmitting }) => (
-                <Form>
-                    <Label>
-                        <span>PHT Delivery Wallet</span>
-                        <StyledField type='text' name='wallet' placeholder='Please type a valid Ethereum-compatible address' />
-                        <StyledErrorMessage name='wallet' component='div' />
-                    </Label>
-                    <Actions>
-                        <Button type='submit' disabled={ isSubmitting }>
-                            {isSubmitting ? buttonTextSubmitting : buttonText}
-                        </Button>
-                    </Actions>
-                </Form>
+                <div>
+                    {(subscriberId !== null) ?
+                        <Form>
+                            <Label>
+                                <span>PHT Delivery Wallet {subscriberId}</span>
+                                <StyledField type='text' name='wallet' placeholder='Please type a valid Ethereum-compatible address' />
+                                <StyledErrorMessage name='wallet' component='div' />
+                            </Label>
+                            <Actions>
+                                <Button type='submit' disabled={ isSubmitting }>
+                                    {isSubmitting ? buttonTextSubmitting : buttonText}
+                                </Button>
+                            </Actions>
+                        </Form>
+                        :
+                        <div>No subscriber</div>
+                    }
+                </div>
             )}
         </Formik>
     );
@@ -68,14 +73,15 @@ const Wallet = ({ url, handleSubmit }) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: getAuthenticatedUser(state)
+        user: getAuthenticatedUser(state),
+        subscriberId: getSubscriberId(state)
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleSubmit(url, { ethereumAddress }) {
-            return dispatch(updateWallet(ethereumAddress));
+        handleSubmit(subscriberId, { wallet }) {
+            return dispatch(updateWallet(subscriberId, wallet));
         }
     };
 };

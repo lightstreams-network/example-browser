@@ -21,7 +21,11 @@ const config = {
 };
 
 const initialState = {
-    app: null
+    app: null,
+    lastRequestedAt: null,
+    subscriberId: null,
+    resetSent: false,
+    resetError: null
 };
 
 export const SET_FIREBASE = 'lsn/firebase/SET_FIREBASE';
@@ -32,11 +36,11 @@ export function setFirebase(app) {
     };
 };
 
-export const SET_SUBSCRIBER = 'lsn/firebase/SET_SUBSCRIBER';
-export function setSubscriber(id) {
+export const SET_SUBSCRIBER_ID = 'lsn/firebase/SET_SUBSCRIBER_ID';
+export function setSubscriberId(subscriberId) {
     return {
-        type: SET_SUBSCRIBER,
-        payload: id
+        type: SET_SUBSCRIBER_ID,
+        payload: subscriberId
     };
 };
 
@@ -48,6 +52,17 @@ export function signOut() {
             .finally(() =>
                 dispatch(clearStoredState())
             );
+    };
+}
+
+export function updateWallet(subscriberId, ethereumAddress) {
+    return (dispatch) => {
+        firebase
+            .database()
+            .ref(`test/subscribers/${subscriberId}`)
+            .child('contribution_details')
+            .child('ethereum')
+            .set(ethereumAddress);
     };
 }
 
@@ -63,7 +78,7 @@ const handleAuthStateChanged = (user) => {
 
         };
 
-        return getSubscribers(getState())
+        return firebase.database().ref('/test/subscribers')
             .orderByChild('uid')
             .equalTo(user.uid)
             .on('value', (snapshot) => {
@@ -74,7 +89,10 @@ const handleAuthStateChanged = (user) => {
                     dispatch(signOut());
                     return;
                 }
-                const matches = Object.keys(snapshot.val()).map(k => snapshot.val()[k]);
+                const matches = Object.keys(snapshot.val()).map(k => {
+                    dispatch(setSubscriberId(k));
+                    return snapshot.val()[k];
+                });
                 dispatch(receiveUser({ ...u, ...matches[0] }));
             });
     };
@@ -153,6 +171,12 @@ export default function reducer(state = initialState, action = {}) {
             lastRequestedAt: (new Date()).toISOString(),
         };
 
+    case SET_SUBSCRIBER_ID:
+        return {
+            ...state,
+            subscriberId: action.payload,
+        };
+
     case REQUEST_RESET:
         return {
             ...state,
@@ -181,3 +205,4 @@ export const getFirebaseApp = (state) => get(state, ['firebase', 'app'], null);
 export const getFirebaseDb = (state) => getFirebaseApp(state).database();
 export const getSubscribers = (state) => getFirebaseDb(state).ref('/subscribers');
 export const getSubscriber = (uid) => (state) => getSubscribers(state).orderByChild('uid').equalTo(uid, 'uid');
+export const getSubscriberId = (state) => get(state, ['firebase', 'subscriberId'], null);
