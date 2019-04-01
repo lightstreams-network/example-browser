@@ -95,7 +95,7 @@ export function updateWallet(subscriberId, ethereumAddress) {
         dispatch(requestUpdateWallet());
         firebase
             .database()
-            .ref(`test/subscribers/${subscriberId}`)
+            .ref(`/subscribers/${subscriberId}`)
             .child('contribution_details')
             .child('ethereum')
             .set(ethereumAddress);
@@ -116,7 +116,7 @@ const handleAuthStateChanged = (user) => {
 
         };
 
-        return firebase.database().ref('/test/subscribers')
+        return firebase.database().ref('/subscribers')
             .orderByChild('uid')
             // .equalTo('p55bQ5EGmYZLASmxjRQn9ZNryM82')
             .equalTo(user.uid)
