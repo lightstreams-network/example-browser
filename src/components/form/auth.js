@@ -5,6 +5,10 @@ import styled from 'styled-components';
 import { getAuthenticatedUser, getAuthErrors } from '../../store/auth';
 import { signInWithEmailAndPassword } from '../../store/firebase';
 import { Button, Label } from '../elements';
+import {
+    FIREBASE_NO_UID_CODE,
+    AUTH_WRONG_EMAIL_OR_PASSWORD
+} from '../../constants';
 
 const isLogin = (url) => url.includes('login');
 
@@ -45,10 +49,15 @@ const AuthForm = ({ url, authErrors, handleSubmit }) => {
             onSubmit={(values, { setSubmitting, setErrors }) => {
                 handleSubmit(url, values, (error) => {
                     setErrors({
-                        email: 'Email/password combination wrong',
-                        password: 'Email/password combination wrong'
+                        email: AUTH_WRONG_EMAIL_OR_PASSWORD,
+                        password: AUTH_WRONG_EMAIL_OR_PASSWORD
                     });
                 }).finally(() => {
+                    if (authErrors && authErrors.code === FIREBASE_NO_UID_CODE) {
+                        setErrors({
+                            email: authErrors.message,
+                        });
+                    }
                     setSubmitting(false);
                 });
             }}
@@ -62,7 +71,7 @@ const AuthForm = ({ url, authErrors, handleSubmit }) => {
                     </Label>
                     <Label>
                         <span>Password</span>
-                        <StyledField type='password' name='password' placeholder='At least 8 characters' />
+                        <StyledField type='password' name='password' placeholder='Your password' />
                         <StyledErrorMessage name='password' component='div' />
                     </Label>
                     <Actions>

@@ -1,9 +1,11 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-
 import  get from 'lodash.get';
-
+import {
+    FIREBASE_NO_UID_CODE,
+    FIREBASE_NO_UID_MESSAGE
+} from '../../constants';
 import {
     requestUser,
     receiveUser,
@@ -44,6 +46,22 @@ export function setSubscriberId(subscriberId) {
     };
 };
 
+export const REQUEST_UPDATE_WALLET = 'lsn/firebase/REQUEST_UPDATE_WALLET';
+export function requestUpdateWallet() {
+    return {
+        type: REQUEST_UPDATE_WALLET,
+        payload: null
+    };
+};
+
+export const RECEIVE_UPDATE_WALLET = 'lsn/firebase/RECEIVE_UPDATE_WALLET';
+export function receiveWalletUpdate(ethereumAddress) {
+    return {
+        type: RECEIVE_UPDATE_WALLET,
+        payload: ethereumAddress
+    };
+};
+
 export function signOut() {
     return (dispatch) => {
         firebase
@@ -55,19 +73,39 @@ export function signOut() {
     };
 }
 
-export function updateWallet(subscriberId, ethereumAddress) {
+export function handleWalletChanged(subscriberId) {
     return (dispatch) => {
         firebase
             .database()
             .ref(`test/subscribers/${subscriberId}`)
             .child('contribution_details')
             .child('ethereum')
+            .on('value', (snapshot) => {
+                const value = snapshot.val();
+                if (value === null) {
+                    return;
+                }
+                dispatch(receiveWalletUpdate(value));
+            });
+    };
+}
+
+export function updateWallet(subscriberId, ethereumAddress) {
+    return (dispatch) => {
+        dispatch(requestUpdateWallet());
+        firebase
+            .database()
+            .ref(`test/subscribers/${subscriberId}`)
+            .child('contribution_details')
+            .child('ethereum')
             .set(ethereumAddress);
+
+        dispatch(handleWalletChanged(subscriberId));
     };
 }
 
 const handleAuthStateChanged = (user) => {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         if (!user) return dispatch(signOut());
 
         const u = {
@@ -80,19 +118,22 @@ const handleAuthStateChanged = (user) => {
 
         return firebase.database().ref('/test/subscribers')
             .orderByChild('uid')
+            // .equalTo('p55bQ5EGmYZLASmxjRQn9ZNryM82')
             .equalTo(user.uid)
             .on('value', (snapshot) => {
                 if (snapshot.val() === null) {
-                    dispatch(receiveAuthError({ message: 'No subscriber with this uid' }));
+                    dispatch(receiveAuthError({ code: FIREBASE_NO_UID_CODE, message: FIREBASE_NO_UID_MESSAGE }));
                     // the next line is to avoid weird states where the user is logged in but no
                     // subscriber is found
-                    dispatch(signOut());
+                    // dispatch(signOut());
                     return;
                 }
-                const matches = Object.keys(snapshot.val()).map(k => {
-                    dispatch(setSubscriberId(k));
+
+                const matches = Object.keys(snapshot.val()).map((k, i) => {
+                    if (i < 1) dispatch(setSubscriberId(k));
                     return snapshot.val()[k];
                 });
+
                 dispatch(receiveUser({ ...u, ...matches[0] }));
             });
     };
@@ -150,11 +191,9 @@ export function resetPassword(email) {
                 .auth()
                 .sendPasswordResetEmail(email)
                 .then(() => {
-                    // console.log('Sent');
                     return dispatch(confirmResetSent());
                 })
                 .catch((error) => {
-                    // console.log('Error', error);
                     dispatch(receiveResetError(error));
                 })
         );
@@ -175,6 +214,19 @@ export default function reducer(state = initialState, action = {}) {
         return {
             ...state,
             subscriberId: action.payload,
+        };
+
+    case REQUEST_UPDATE_WALLET:
+        return {
+            ...state,
+            requestUpdateWallet: true,
+        };
+
+    case RECEIVE_UPDATE_WALLET:
+        return {
+            ...state,
+            requestUpdateWallet: false,
+            wallet: action.payload
         };
 
     case REQUEST_RESET:
@@ -206,3 +258,4 @@ export const getFirebaseDb = (state) => getFirebaseApp(state).database();
 export const getSubscribers = (state) => getFirebaseDb(state).ref('/subscribers');
 export const getSubscriber = (uid) => (state) => getSubscribers(state).orderByChild('uid').equalTo(uid, 'uid');
 export const getSubscriberId = (state) => get(state, ['firebase', 'subscriberId'], null);
+export const getWalletAddress = (state) => get(state, ['firebase', 'wallet'], null);

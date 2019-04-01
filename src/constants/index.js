@@ -1,5 +1,5 @@
 
-export const SERVER_URL = 'http://localhost:3000';
+export const SERVER_URL = 'https://presale.lightstreams.network';
 
 export const ROUTE_HOME = '/';
 export const ROUTE_LOGIN = '/login';
@@ -12,3 +12,6 @@ export const ROUTE_INVITE = '/invite';
 export const LOCAL_STORAGE_NAMESPACE = 'fanbase-invite-app';
 export const RESET_PASSWORD = 'Reset password';
 export const FORM_SENDING = 'Sending...';
+export const AUTH_WRONG_EMAIL_OR_PASSWORD = 'Email/password combination wrong';
+export const FIREBASE_NO_UID_CODE = 'database/no-uid';
+export const FIREBASE_NO_UID_MESSAGE = 'No subscriber data. Please contact presale@lightstreams.io';

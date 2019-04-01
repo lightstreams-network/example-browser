@@ -56,7 +56,7 @@ const Dashboard = () => (
                     <Box>
                         <Section>
                             <H3>Welcome {user.first_name}</H3>
-                            <P>This page will let you set the wallet address where you will receive your PHT tokens.</P>
+                            <P>This page will let you set the wallet address where you would like to receive your PHT tokens.</P>
                         </Section>
                         <Section>
                             <H3>Your Wallet</H3>
@@ -64,7 +64,8 @@ const Dashboard = () => (
                             <WalletInput />
                         </Section>
                         <Section>
-                            <P><span className='em'>Need help?</span> <StyledA href="https://medium.com/lightstreams/how-to-create-your-pht-wallet-e9233fb97937">Follow these instructions</StyledA></P>
+                            <P><span className='em'>Don&apos;t have a PHT address?</span> <StyledA href="https://medium.com/lightstreams/how-to-create-your-pht-wallet-e9233fb97937">Follow these instructions</StyledA></P>
+                            <P><span className='em'>Need help?</span> <StyledA href="mailto:presale@lightstreams.io">presale@lightstreams.io</StyledA></P>
                         </Section>
                     </Box>
 

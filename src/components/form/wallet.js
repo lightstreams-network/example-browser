@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
 import { getAuthenticatedUser } from '../../store/auth';
-import { updateWallet, getSubscriberId } from '../../store/firebase';
+import { updateWallet, getSubscriberId, getWalletAddress } from '../../store/firebase';
 import { Button, Label } from '../elements';
 import { isAddress } from '../../lib/checks';
 import { RESET_PASSWORD, FORM_SENDING } from '../../constants';
@@ -24,7 +24,7 @@ const Actions = styled.div`
     text-align: center;
 `;
 
-const Wallet = ({ url, handleSubmit, subscriberId }) => {
+const Wallet = ({ url, handleSubmit, subscriberId, walletAddress }) => {
     const buttonText = 'Update wallet address';
     const buttonTextSubmitting = FORM_SENDING;
 
@@ -49,10 +49,15 @@ const Wallet = ({ url, handleSubmit, subscriberId }) => {
         >
             {({ isSubmitting }) => (
                 <div>
-                    {(subscriberId !== null) ?
+                    {(walletAddress !== null) ?
+                        <div>
+                            <h2>Thank you for updating your wallet!</h2>
+                            <h3>Wallet address: {walletAddress}</h3>
+                        </div>
+                        :
                         <Form>
                             <Label>
-                                <span>PHT Delivery Wallet {subscriberId}</span>
+                                <span>PHT Delivery Address</span>
                                 <StyledField type='text' name='wallet' placeholder='Please type a valid Ethereum-compatible address' />
                                 <StyledErrorMessage name='wallet' component='div' />
                             </Label>
@@ -62,9 +67,8 @@ const Wallet = ({ url, handleSubmit, subscriberId }) => {
                                 </Button>
                             </Actions>
                         </Form>
-                        :
-                        <div>No subscriber</div>
                     }
+
                 </div>
             )}
         </Formik>
@@ -74,7 +78,8 @@ const Wallet = ({ url, handleSubmit, subscriberId }) => {
 const mapStateToProps = (state) => {
     return {
         user: getAuthenticatedUser(state),
-        subscriberId: getSubscriberId(state)
+        subscriberId: getSubscriberId(state),
+        walletAddress: getWalletAddress(state)
     };
 };
 
