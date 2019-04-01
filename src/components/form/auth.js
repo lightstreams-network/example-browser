@@ -53,7 +53,7 @@ const AuthForm = ({ url, authErrors, handleSubmit }) => {
                         password: AUTH_WRONG_EMAIL_OR_PASSWORD
                     });
                 }).finally(() => {
-                    if (authErrors && authErrors.code === FIREBASE_NO_UID_CODE) {
+                    if (authErrors) {
                         setErrors({
                             email: authErrors.message,
                         });
