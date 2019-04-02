@@ -77,7 +77,7 @@ export function handleWalletChanged(subscriberId) {
     return (dispatch) => {
         firebase
             .database()
-            .ref(`test/subscribers/${subscriberId}`)
+            .ref(`/subscribers/${subscriberId}`)
             .child('contribution_details')
             .child('ethereum')
             .on('value', (snapshot) => {
@@ -104,57 +104,57 @@ export function updateWallet(subscriberId, ethereumAddress) {
     };
 }
 
-const handleAuthStateChanged = (user) => {
+function handleAuthStateChanged(user) {
     return (dispatch) => {
-        if (!user) return dispatch(signOut());
+        return new Promise((resolve, reject) => {
+            const u = {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+                emailVerified: user.emailVerified
 
-        const u = {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
-            emailVerified: user.emailVerified
+            };
 
-        };
-
-        return firebase.database().ref('/subscribers')
-            .orderByChild('uid')
-            // .equalTo('p55bQ5EGmYZLASmxjRQn9ZNryM82')
-            .equalTo(user.uid)
-            .on('value', (snapshot) => {
+            firebase.database().ref(`/uids/${user.uid}`).on('value', (snapshot) => {
                 if (snapshot.val() === null) {
-                    dispatch(receiveAuthError({ code: FIREBASE_NO_UID_CODE, message: FIREBASE_NO_UID_MESSAGE }));
-                    // the next line is to avoid weird states where the user is logged in but no
-                    // subscriber is found
-                    // dispatch(signOut());
-                    return;
+                    const err = { code: FIREBASE_NO_UID_CODE, message: FIREBASE_NO_UID_MESSAGE };
+                    dispatch(receiveAuthError(err));
+                    return reject(err);
                 }
 
-                const matches = Object.keys(snapshot.val()).map((k, i) => {
-                    if (i < 1) dispatch(setSubscriberId(k));
-                    return snapshot.val()[k];
-                });
+                const { subscriberId } = snapshot.val();
 
-                dispatch(receiveUser({ ...u, ...matches[0] }));
+                dispatch(setSubscriberId(subscriberId));
+
+                return firebase.database().ref(`/subscribers/${subscriberId}`).on('value', (subscriberSnapshot) => {
+                    if (subscriberSnapshot.val === null) {
+                        const err = { code: FIREBASE_NO_UID_CODE, message: FIREBASE_NO_UID_MESSAGE };
+                        dispatch(receiveAuthError(err));
+                        return reject(err);
+                    }
+                    const subscriber = subscriberSnapshot.val();
+                    resolve(dispatch(receiveUser({ ...u, ...subscriber })));
+                });
             });
+
+        });
     };
-};
+}
 
 export function initializeFirebase() {
-    return (dispatch, getState) => {
+    return (dispatch) => {
         firebase.initializeApp(config);
-        firebase.auth().onAuthStateChanged((user) => handleAuthStateChanged(user)(dispatch, getState));
         return dispatch(setFirebase(firebase));
     };
 };
 
-export function signInWithEmailAndPassword(username, password, errorCb) {
+export function signInWithEmailAndPassword(username, password) {
     return (dispatch) => {
         dispatch(requestUser());
         return firebase.auth()
             .signInWithEmailAndPassword(username, password)
-            .catch((error) => {
-                dispatch(receiveAuthError(error));
-                errorCb(error);
+            .then(({ user }) => {
+                return dispatch(handleAuthStateChanged(user));
             });
     };
 };

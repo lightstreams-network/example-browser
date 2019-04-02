@@ -47,19 +47,16 @@ const AuthForm = ({ url, authErrors, handleSubmit }) => {
                 return errors;
             }}
             onSubmit={(values, { setSubmitting, setErrors }) => {
-                handleSubmit(url, values, (error) => {
-                    setErrors({
-                        email: AUTH_WRONG_EMAIL_OR_PASSWORD,
-                        password: AUTH_WRONG_EMAIL_OR_PASSWORD
-                    });
-                }).finally(() => {
-                    if (authErrors) {
+                handleSubmit(url, values)
+                    .catch(err => {
                         setErrors({
-                            email: authErrors.message,
+                            email: err.message
                         });
-                    }
-                    setSubmitting(false);
-                });
+                    })
+                    .finally(() => {
+
+                        setSubmitting(false);
+                    });
             }}
         >
             {({ isSubmitting }) => (
@@ -94,8 +91,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleSubmit(url, { email, password }, errorCb) {
-            return dispatch(signInWithEmailAndPassword(email, password, errorCb));
+        handleSubmit(url, { email, password }) {
+            return dispatch(signInWithEmailAndPassword(email, password));
         }
     };
 };
