@@ -16,7 +16,7 @@ const Reset = () => (
                             <ResetForm />
                         </Section>
                     </Box>
-                    <StyledLink to='/'>Back</StyledLink>
+                    <StyledLink to='/login'>Back</StyledLink>
                 </Wrapper>
             </Container>
         )}
