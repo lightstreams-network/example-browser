@@ -1,7 +1,7 @@
 {
-    "name": "fanbase-invite-app",
-    "version": "1.0.0",
-    "description": "📢 Fanbase member recruitment app 📢",
+    "name": "lsn-account-manager",
+    "version": "1.1.0",
+    "description": "Lightstreams Presale Account Manager 💼💼💼",
     "main": "src/index.js",
     "scripts": {
         "start": "cross-env NODE_ENV=development webpack-dev-server --open",
@@ -27,12 +27,12 @@
     "private": true,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/lightstreams-network/fanbase-invite-app.git"
+        "url": "git+https://github.com/lightstreams-network/account-manager.git"
     },
     "bugs": {
-        "url": "https://github.com/lightstreams-network/fanbase-invite-app/issues"
+        "url": "https://github.com/lightstreams-network/account-manager/issues"
     },
-    "homepage": "https://github.com/leonardomso/react-bolt#readme",
+    "homepage": "https://github.com/lightstreams-network/account-manager/#readme",
     "devDependencies": {
         "@babel/core": "^7.3.3",
         "@babel/node": "^7.2.2",
