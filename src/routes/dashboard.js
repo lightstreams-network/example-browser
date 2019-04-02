@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { ROUTE_LOGIN } from '../constants';
 import { IfNotAuthRedirectTo } from '../components/auth';
 import Logo from '../components/logo';
-import CopyToClipboard from '../components/copy-to-clipboard';
-import Pill from '../components/pill';
 import WalletInput from '../components/form/wallet';
 import {
     Container,
