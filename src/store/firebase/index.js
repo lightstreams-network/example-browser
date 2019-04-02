@@ -185,19 +185,20 @@ function receiveResetError(error) {
 
 export function resetPassword(email) {
     return (dispatch) => {
-        dispatch(requestReset())
-        return (
+        dispatch(requestReset());
+        return new Promise((resolve, reject) => {
             firebase
                 .auth()
                 .sendPasswordResetEmail(email)
                 .then(() => {
-                    return dispatch(confirmResetSent());
+                    dispatch(confirmResetSent());
+                    resolve();
                 })
                 .catch((error) => {
                     dispatch(receiveResetError(error));
-                })
-        );
-
+                    reject(error);
+                });
+        });
     };
 }
 
@@ -259,3 +260,4 @@ export const getSubscribers = (state) => getFirebaseDb(state).ref('/subscribers'
 export const getSubscriber = (uid) => (state) => getSubscribers(state).orderByChild('uid').equalTo(uid, 'uid');
 export const getSubscriberId = (state) => get(state, ['firebase', 'subscriberId'], null);
 export const getWalletAddress = (state) => get(state, ['firebase', 'wallet'], null);
+export const getResetSent = (state) => get(state, ['firebase', 'resetSent'], null);

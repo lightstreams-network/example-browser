@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
 import { getAuthenticatedUser } from '../../store/auth';
-import { resetPassword } from '../../store/firebase';
+import { resetPassword, getResetSent } from '../../store/firebase';
 import { Button, Label } from '../elements';
 import { RESET_PASSWORD, FORM_SENDING } from '../../constants';
 
@@ -23,7 +23,7 @@ const Actions = styled.div`
     text-align: center;
 `;
 
-const AuthForm = ({ url, handleSubmit }) => {
+const AuthForm = ({ url, handleSubmit, resetSent }) => {
     const buttonText = RESET_PASSWORD;
     const buttonTextSubmitting = FORM_SENDING;
 
@@ -42,23 +42,36 @@ const AuthForm = ({ url, handleSubmit }) => {
                 return errors;
             }}
             onSubmit={(values, { setSubmitting, setErrors }) => {
-                handleSubmit(url, values);
-                setSubmitting(false);
+                handleSubmit(url, values)
+                    .catch(err => {
+                        setErrors({
+                            email: err.message
+                        });
+                    })
+                    .finally(() => {
+                        setSubmitting(false);
+                    });
             }}
         >
             {({ isSubmitting }) => (
-                <Form>
-                    <Label>
-                        <span>Email</span>
-                        <StyledField type='email' name='email' placeholder='email@example.com' />
-                        <StyledErrorMessage name='email' component='div' />
-                    </Label>
-                    <Actions>
-                        <Button type='submit' disabled={ isSubmitting }>
-                            {isSubmitting ? buttonTextSubmitting : buttonText}
-                        </Button>
-                    </Actions>
-                </Form>
+                <div>
+                    {resetSent ?
+                        <div>Resent sent</div>
+                        :
+                        <Form>
+                            <Label>
+                                <span>Email</span>
+                                <StyledField type='email' name='email' placeholder='email@example.com' />
+                                <StyledErrorMessage name='email' component='div' />
+                            </Label>
+                            <Actions>
+                                <Button type='submit' disabled={ isSubmitting }>
+                                    {isSubmitting ? buttonTextSubmitting : buttonText}
+                                </Button>
+                            </Actions>
+                        </Form>
+                    }
+                </div>
             )}
         </Formik>
     );
@@ -66,7 +79,8 @@ const AuthForm = ({ url, handleSubmit }) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: getAuthenticatedUser(state)
+        user: getAuthenticatedUser(state),
+        resetSent: getResetSent(state)
     };
 };
 
