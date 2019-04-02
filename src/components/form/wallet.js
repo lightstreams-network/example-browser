@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
@@ -24,13 +24,15 @@ const Actions = styled.div`
     text-align: center;
 `;
 
-const Wallet = ({ url, handleSubmit, subscriberId, walletAddress }) => {
+const Wallet = ({ user, handleSubmit, subscriberId, walletAddress }) => {
     const buttonText = 'Update wallet address';
     const buttonTextSubmitting = FORM_SENDING;
+    const initialWallet = user && user.contribution_details && user.contribution_details.ethereum ? user.contribution_details.ethereum : null;
+    const [walletUpdated, setWalletUpdated] = useState(false);
 
     return (
         <Formik
-            initialValues={{ wallet: '' }}
+            initialValues={{ wallet: initialWallet }}
             validate={values => {
                 const errors = {};
                 if (!values.wallet) {
@@ -43,32 +45,39 @@ const Wallet = ({ url, handleSubmit, subscriberId, walletAddress }) => {
                 return errors;
             }}
             onSubmit={(values, { setSubmitting, setErrors }) => {
-                handleSubmit(subscriberId, values);
-                setSubmitting(false);
+                handleSubmit(subscriberId, values)
+                    .then((wallet) => {
+                        setWalletUpdated(true);
+                        setTimeout(() => setWalletUpdated(false), 3000);
+                    })
+                    .catch(err => {
+                        setWalletUpdated(false);
+                    })
+                    .finally(() => {
+                        setSubmitting(false);
+                    });
+
             }}
         >
-            {({ isSubmitting }) => (
+            {({ values, isSubmitting, setFieldValue}) => (
                 <div>
-                    {(walletAddress !== null) ?
-                        <div>
-                            <h2>Thank you for updating your wallet!</h2>
-                            <h3>Wallet address: {walletAddress}</h3>
-                        </div>
-                        :
-                        <Form>
-                            <Label>
-                                <span>PHT Delivery Address</span>
-                                <StyledField type='text' name='wallet' placeholder='Please type a valid Ethereum-compatible address' />
-                                <StyledErrorMessage name='wallet' component='div' />
-                            </Label>
-                            <Actions>
-                                <Button type='submit' disabled={ isSubmitting }>
-                                    {isSubmitting ? buttonTextSubmitting : buttonText}
-                                </Button>
-                            </Actions>
-                        </Form>
-                    }
-
+                    <Form>
+                        <Label>
+                            <span>PHT Delivery Address</span>
+                            <StyledField
+                                type='text'
+                                name='wallet'
+                                placeholder='Please type a valid Ethereum-compatible address'
+                                onChange={(e) => setFieldValue('wallet', e.target.value)}
+                            />
+                            <StyledErrorMessage name='wallet' component='div' />
+                        </Label>
+                        <Actions>
+                            <Button type='submit' disabled={ isSubmitting }>
+                                {isSubmitting ? buttonTextSubmitting : buttonText} {walletUpdated ? ' - Wallet updated' : null}
+                            </Button>
+                        </Actions>
+                    </Form>
                 </div>
             )}
         </Formik>

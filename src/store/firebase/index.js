@@ -31,10 +31,10 @@ const initialState = {
 };
 
 export const SET_FIREBASE = 'lsn/firebase/SET_FIREBASE';
-export function setFirebase(app) {
+export function setFirebase() {
     return {
         type: SET_FIREBASE,
-        payload: app
+        payload: null
     };
 };
 
@@ -74,7 +74,7 @@ export function signOut() {
 }
 
 export function handleWalletChanged(subscriberId) {
-    return (dispatch) => {
+    return new Promise((resolve, reject) => {
         firebase
             .database()
             .ref(`/subscribers/${subscriberId}`)
@@ -83,11 +83,11 @@ export function handleWalletChanged(subscriberId) {
             .on('value', (snapshot) => {
                 const value = snapshot.val();
                 if (value === null) {
-                    return;
+                    return reject(new Error('No snapshot data'));
                 }
-                dispatch(receiveWalletUpdate(value));
+                resolve(value);
             });
-    };
+    });
 }
 
 export function updateWallet(subscriberId, ethereumAddress) {
@@ -100,7 +100,7 @@ export function updateWallet(subscriberId, ethereumAddress) {
             .child('ethereum')
             .set(ethereumAddress);
 
-        dispatch(handleWalletChanged(subscriberId));
+        return handleWalletChanged(subscriberId);
     };
 }
 
@@ -144,7 +144,7 @@ function handleAuthStateChanged(user) {
 export function initializeFirebase() {
     return (dispatch) => {
         firebase.initializeApp(config);
-        return dispatch(setFirebase(firebase));
+        return dispatch(setFirebase());
     };
 };
 
@@ -207,7 +207,6 @@ export default function reducer(state = initialState, action = {}) {
     case SET_FIREBASE:
         return {
             ...state,
-            app: action.payload,
             lastRequestedAt: (new Date()).toISOString(),
         };
 
