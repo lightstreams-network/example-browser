@@ -53,7 +53,7 @@ const Dashboard = () => (
                     </Header>
                     <Box>
                         <Section>
-                            <H3>Welcome {user.first_name}</H3>
+                            <H3>Welcome {user.account}</H3>
                             <P>This page will let you set the wallet address where you would like to receive your PHT tokens.</P>
                         </Section>
                         <Section>

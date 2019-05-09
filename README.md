@@ -1,8 +1,10 @@
-# Lightstreams Account Manager
+# transoundify
+
+A decentralized application running on the Lightstreams Network
 
 ## Introduction
 
-The Lightstreams account manager helps users manage their account & wallet.
+You can create a  new account (i.e. wallet) and login with that account.
 
 ## Features
 
