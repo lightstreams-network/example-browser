@@ -39,7 +39,7 @@ const StyledA = styled.a`
 
 const Dashboard = () => (
     <IfNotAuthRedirectTo route={ROUTE_LOGIN}>
-        {({ clearStorage, user }) => (
+        {({ user, clearStorage, addFiles }) => (
             <Container>
                 <Wrapper>
                     <Header className='w-100 w-75-ns'>
@@ -64,7 +64,7 @@ const Dashboard = () => (
                         </Section>
                         <Section>
                             <H3>Upload a file</H3>
-                            <Dropzone user={user} />
+                            <Dropzone user={user} addFiles={addFiles} />
                         </Section>
 
                         <Section>

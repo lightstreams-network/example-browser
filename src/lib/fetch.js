@@ -35,7 +35,7 @@ export const request = (method, url, data, options) => {
     const settings = {
         method: method.toUpperCase(),
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': options['Content-Type'] || 'application/json',
         credentials:  'same-origin',
     };
 
@@ -47,7 +47,13 @@ export const request = (method, url, data, options) => {
             const finalUrl = `${url}${url.includes('?') ? '&' : '?'}${toQueryParams(params)}`;
             return fetchAndCheck(mapUriToBaseUrl(finalUrl), { ...settings, ...options });
         }
-        settings.body = JSON.stringify(data);
+
+        if (settings['Content-Type'].includes('json')) {
+            settings.body = JSON.stringify(data);
+        } else {
+            settings.body = data;
+        }
+
     }
 
     return fetchAndCheck(mapUriToBaseUrl(url), { ...settings, ...options }).then(toJson);

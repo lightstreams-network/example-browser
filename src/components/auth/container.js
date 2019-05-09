@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAuthenticated, getAuthenticatedUser, clearStoredState } from '../../store/auth';
+import { lethStorageAdd } from '../../store/leth';
 
 // see https://frontarm.com/james-k-nelson/passing-data-props-children/
 
@@ -16,6 +17,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         clearStorage() {
             dispatch(clearStoredState());
+        },
+        addFiles({ account, password, files }) {
+            dispatch(lethStorageAdd({ account, password, files }));
         }
     };
 };

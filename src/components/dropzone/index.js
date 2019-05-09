@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import {useDropzone} from 'react-dropzone';
 import styled from 'styled-components';
-import leth from '../../lib/leth';
+// import leth from '../../lib/leth';
 
 const getColor = (props) => {
     if (props.isDragAccept) {
@@ -32,7 +32,7 @@ const Container = styled.div`
     transition: border .24s ease-in-out;
 `;
 
-const Dropzone = ({ user }) => {
+const Dropzone = ({ user, addFiles }) => {
     const onDrop = useCallback(acceptedFiles => {
         const reader = new FileReader();
 
@@ -45,31 +45,33 @@ const Dropzone = ({ user }) => {
             console.log(binaryStr);
 
         };
-        acceptedFiles.forEach(async file => {
 
-            const { response } = await leth.storage.add({
-                account: user.account,
-                password: user.password,
-                file
-            });
+        // const formData = new FormData();
+        // formData.append('owner', user.account);
+        // formData.append('password', user.password);
 
-            console.log(response);
-
-            // const formData = new FormData();
-            // formData.append('owner', user.account);
-            // formData.append('password', user.password);
-            // formData.append('file', file);
-            // fetch('https://gateway.sirius.lightstreams.io/storage/add', {
-            //     method: 'POST',
-            //     body: formData
-            // })
-            // .then(response => response.json())
-            // .catch(error => console.error('Error:', error))
-            // .then(response => console.log('Success:', JSON.stringify(response)));
-
+        // acceptedFiles.forEach(async file => {
             // console.log(file);
+            // formData.append('file', file);
             // reader.readAsBinaryString(file)
+        // });
+
+        // console.log(acceptedFiles);
+
+        addFiles({
+            account: user.account,
+            password: user.password,
+            files: acceptedFiles
         });
+
+        // fetch('https://gateway.sirius.lightstreams.io/storage/add', {
+        //     method: 'POST',
+        //     body: formData
+        // })
+        //     .then(response => response.json())
+        //     .catch(error => console.error('Error:', error))
+        //     .then(response => console.log('Success:', JSON.stringify(response)));
+
     }, []);
 
     const {
