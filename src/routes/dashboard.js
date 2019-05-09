@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ROUTE_LOGIN } from '../constants';
 import { IfNotAuthRedirectTo } from '../components/auth';
 import Logo from '../components/logo';
-import WalletInput from '../components/form/wallet';
+// import WalletInput from '../components/form/wallet';
 import {
     Container,
     Wrapper,
@@ -59,7 +59,6 @@ const Dashboard = () => (
                         <Section>
                             <H3>Your Wallet</H3>
                             <P>Please make sure you have the private key for this address and that it is NOT a hardware or exchange wallet.</P>
-                            <WalletInput />
                         </Section>
                         <Section>
                             <P><span className='em'>Don&apos;t have a PHT address?</span> <StyledA href="https://medium.com/lightstreams/how-to-create-your-pht-wallet-e9233fb97937">Follow these instructions</StyledA></P>

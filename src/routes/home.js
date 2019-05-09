@@ -19,6 +19,7 @@ const Home = () => (
                     </IfAuth>
                     <IfNotAuth>
                         <StyledLink to='/login'>Login</StyledLink>
+                        <StyledLink to='/register'>Create account</StyledLink>
                     </IfNotAuth>
                 </Wrapper>
             </Container>

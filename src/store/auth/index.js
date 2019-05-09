@@ -6,6 +6,7 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const initialState = {
     user: null,
     error: null,
+    token: null
 };
 
 
@@ -36,24 +37,24 @@ export function receiveAuthError(error) {
     };
 }
 
-export function fetchToken({ username, password }) {
+export function fetchToken({ account, password }) {
     return (dispatch) => {
-        dispatch(requestToken(username, password));
+        dispatch(requestToken(account, password));
 
-        return delay(2000).then(() => {
-            dispatch(receiveToken('sometoken'));
-            dispatch(receiveUser({ id: 1, fullName: 'Fan Base', email: 'fb@fanbase.live'}));
-        });
-
-        // return hPost('/login', { username, password }).then((response) => {
-        //     dispatch(receiveToken(response.token));
-        //     dispatch(receiveUser(response.user));
-        //     return response.token;
-        // })
-        // .catch((error) => {
-        //     dispatch(receiveAuthError(error.response.statusText));
-        //     throw error;
+        // return delay(2000).then(() => {
+        //     dispatch(receiveToken('sometoken'));
+        //     dispatch(receiveUser({ id: 1, fullName: 'Fan Base', email: 'fb@fanbase.live'}));
         // });
+
+        return hPost('/user/signin', { account, password })
+        .then((response) => {
+            dispatch(receiveToken(response.token));
+            return response.token;
+        })
+        .catch((error) => {
+            dispatch(receiveAuthError(error));
+            throw error;
+        });
     }
 }
 
@@ -105,22 +106,25 @@ export function fetchUserFromToken(token) {
     };
 }
 
-export function createUser({ username, password }) {
+export function createUser({ password }) {
     return (dispatch) => {
         dispatch(requestCreateUser());
 
-        return delay(2000).then(() => {
-            dispatch(receiveUser({ id: 1, fullName: 'Lightstreams', email: 'notifications@lightstreams.io '}));
-        });
-
-        // return hPost('/register', { username, password }).then((response) => {
-        //     dispatch(receiveUser(response));
-        //     return response;
-        // })
-        // .catch((error) => {
-        //     dispatch(receiveAuthError(error.response.statusText));
-        //     throw error;
+        // return delay(2000).then(() => {
+        //     dispatch(receiveUser({ id: 1, fullName: 'Lightstreams', email: 'notifications@lightstreams.io '}));
         // });
+
+        return hPost('/user/signup', { password })
+        .then((response) => {
+            debugger;
+            dispatch(receiveUser(response));
+            return response;
+        })
+        .catch((error) => {
+            debugger;
+            dispatch(receiveAuthError(error));
+            throw error;
+        });
     }
 }
 
@@ -137,7 +141,10 @@ export default function authReducer(state = initialState, action = {}) {
             return {
                 ...state,
                 isFetching: false,
-                token: action.payload,
+                user: {
+                    ...state.user,
+                    ...action.payload
+                },
                 error: null,
             };
 
@@ -156,7 +163,9 @@ export default function authReducer(state = initialState, action = {}) {
         case REQUEST_USER:
             return {
                 ...state,
-                user: null
+                user: {
+                    ...state.user
+                }
             };
 
         case RECEIVE_USER:

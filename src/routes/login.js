@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../components/logo';
-import AuthForm from '../components/form/auth';
+import LoginForm from '../components/form/login';
 import { Container, Wrapper, StyledLink, Box, Section } from '../components/elements';
 import { IfAuthRedirectTo } from '../components/auth';
 import { ROUTE_DASHBOARD, ROUTE_RESET } from '../constants';
@@ -13,7 +13,7 @@ const Login = () => (
                     <Logo className='big' url='/' />
                     <Box className='w-50'>
                         <Section className='pt'>
-                            <AuthForm url='/login' />
+                            <LoginForm url='/login' />
                         </Section>
                     </Box>
                     <StyledLink to={ROUTE_RESET}>Forgot your password? Reset it</StyledLink>

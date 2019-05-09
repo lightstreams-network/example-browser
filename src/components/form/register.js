@@ -2,13 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
-import { getAuthenticatedUser, getAuthErrors } from '../../store/auth';
-import { signInWithEmailAndPassword } from '../../store/firebase';
+import { createUser, fetchToken, getAuthenticatedUser, getAuthErrors } from '../../store/auth';
+import { validatePassword } from '../../lib/validators';
 import { Button, Label } from '../elements';
-import {
-    FIREBASE_NO_UID_CODE,
-    AUTH_WRONG_EMAIL_OR_PASSWORD
-} from '../../constants';
 
 const isLogin = (url) => url.includes('login');
 
@@ -28,33 +24,22 @@ const Actions = styled.div`
     text-align: center;
 `;
 
-const AuthForm = ({ url, authErrors, handleSubmit }) => {
-    const buttonText = (isLogin(url) ? 'Sign in' : 'Request an invite');
-    const buttonTextSubmitting = (isLogin(url) ? 'Signing in' : 'Requesting an invite');
+const RegisterForm = ({ url, authErrors, handleSubmit }) => {
+    const buttonText = 'Create account';
+    const buttonTextSubmitting = 'Creating account';
 
     return (
         <Formik
-            initialValues={{ email: '', password: '' }}
-            validate={values => {
-                const errors = {};
-                if (!values.email) {
-                    errors.email = 'Email address is missing';
-                } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                    errors.email = 'We need a real email address';
-                }
-                return errors;
-            }}
+            initialValues={{ password: '' }}
+            validate={values => validatePassword(values)}
             onSubmit={(values, { setSubmitting, setErrors }) => {
                 handleSubmit(url, values)
                     .catch(err => {
                         setErrors({
-                            email: err.message
+                            password: err.message
                         });
                     })
                     .finally(() => {
-
                         setSubmitting(false);
                     });
             }}
@@ -62,12 +47,7 @@ const AuthForm = ({ url, authErrors, handleSubmit }) => {
             {({ isSubmitting }) => (
                 <Form>
                     <Label>
-                        <span>Email</span>
-                        <StyledField type='email' name='email' placeholder='email@example.com' />
-                        <StyledErrorMessage name='email' component='div' />
-                    </Label>
-                    <Label>
-                        <span>Password</span>
+                        <span>We need a password for your account</span>
                         <StyledField type='password' name='password' placeholder='Your password' />
                         <StyledErrorMessage name='password' component='div' />
                     </Label>
@@ -91,8 +71,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleSubmit(url, { email, password }) {
-            return dispatch(signInWithEmailAndPassword(email, password));
+        handleSubmit(url, { password }) {
+            return dispatch(createUser({ password }));
         }
     };
 };
@@ -100,5 +80,5 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AuthForm);
+)(RegisterForm);
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthForm from '../components/form/auth';
+import RegisterForm from '../components/form/register';
 import {
     Container,
     Wrapper,
@@ -19,7 +19,7 @@ const Register = () => (
                     <Logo className='big' url='/' />
                     <Box className='w-50'>
                         <Section className='pt'>
-                            <AuthForm url='/register' />
+                            <RegisterForm url='/register' />
                         </Section>
                     </Box>
                     <StyledLink to='/login'>Already have an account? Login</StyledLink>
