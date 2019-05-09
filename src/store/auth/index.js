@@ -49,6 +49,7 @@ export function fetchToken({ account, password }) {
         return hPost('/user/signin', { account, password })
         .then((response) => {
             dispatch(receiveToken(response.token));
+            dispatch(receiveUser({ account, password }))
             return response.token;
         })
         .catch((error) => {
@@ -116,8 +117,7 @@ export function createUser({ password }) {
 
         return hPost('/user/signup', { password })
         .then((response) => {
-            debugger;
-            dispatch(receiveUser(response));
+            dispatch(receiveUser({ password, ...response }));
             return response;
         })
         .catch((error) => {
@@ -141,10 +141,7 @@ export default function authReducer(state = initialState, action = {}) {
             return {
                 ...state,
                 isFetching: false,
-                user: {
-                    ...state.user,
-                    ...action.payload
-                },
+                token: action.payload,
                 error: null,
             };
 

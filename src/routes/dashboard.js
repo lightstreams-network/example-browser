@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { ROUTE_LOGIN } from '../constants';
 import { IfNotAuthRedirectTo } from '../components/auth';
 import Logo from '../components/logo';
-// import WalletInput from '../components/form/wallet';
+import CopyToClipboard from '../components/copy-to-clipboard';
+import Dropzone from '../components/dropzone';
 import {
     Container,
     Wrapper,
@@ -53,16 +54,21 @@ const Dashboard = () => (
                     </Header>
                     <Box>
                         <Section>
-                            <H3>Welcome {user.account}</H3>
-                            <P>This page will let you set the wallet address where you would like to receive your PHT tokens.</P>
+                            <H3>Welcome!</H3>
+                            <P>This page demonstrates how you can upload file to your smart vault.</P>
                         </Section>
                         <Section>
                             <H3>Your Wallet</H3>
-                            <P>Please make sure you have the private key for this address and that it is NOT a hardware or exchange wallet.</P>
+                            <CopyToClipboard initialText={user.account} />
+                            <P>Please make sure you have the password for this address, as there is no other way to recover the account.</P>
                         </Section>
                         <Section>
-                            <P><span className='em'>Don&apos;t have a PHT address?</span> <StyledA href="https://medium.com/lightstreams/how-to-create-your-pht-wallet-e9233fb97937">Follow these instructions</StyledA></P>
-                            <P><span className='em'>Need help?</span> <StyledA href="mailto:presale@lightstreams.io">presale@lightstreams.io</StyledA></P>
+                            <H3>Upload a file</H3>
+                            <Dropzone user={user} />
+                        </Section>
+
+                        <Section>
+                            <P><span className='em'>Are you a developer?</span> <StyledA href="https://docs.lightstreams.network">Check out the documentation</StyledA></P>
                         </Section>
                     </Box>
 

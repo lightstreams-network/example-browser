@@ -2,11 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
-import { createUser, fetchToken, getAuthenticatedUser, getAuthErrors } from '../../store/auth';
+import { createUser, getAuthenticatedUser, getAuthErrors } from '../../store/auth';
 import { validatePassword } from '../../lib/validators';
 import { Button, Label } from '../elements';
-
-const isLogin = (url) => url.includes('login');
 
 const StyledField = styled(Field)`
     border: 1px solid var(--silver);
