@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import {useDropzone} from 'react-dropzone';
 import styled from 'styled-components';
-// import leth from '../../lib/leth';
 
 const getColor = (props) => {
     if (props.isDragAccept) {
@@ -46,31 +45,11 @@ const Dropzone = ({ user, addFiles }) => {
 
         };
 
-        // const formData = new FormData();
-        // formData.append('owner', user.account);
-        // formData.append('password', user.password);
-
-        // acceptedFiles.forEach(async file => {
-            // console.log(file);
-            // formData.append('file', file);
-            // reader.readAsBinaryString(file)
-        // });
-
-        // console.log(acceptedFiles);
-
         addFiles({
             account: user.account,
             password: user.password,
             files: acceptedFiles
         });
-
-        // fetch('https://gateway.sirius.lightstreams.io/storage/add', {
-        //     method: 'POST',
-        //     body: formData
-        // })
-        //     .then(response => response.json())
-        //     .catch(error => console.error('Error:', error))
-        //     .then(response => console.log('Success:', JSON.stringify(response)));
 
     }, []);
 

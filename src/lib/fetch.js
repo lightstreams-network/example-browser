@@ -23,7 +23,7 @@ function toJson(response) {
 
 export const toQueryParams = (params) => {
     return Object.keys(params)
-        .map(k => `${encodeURIComponent(k)}'='${encodeURIComponent(params[k])}`)
+        .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
         .join('&');
 };
 
@@ -43,9 +43,8 @@ export const request = (method, url, data, options) => {
 
     if (data) {
         if (isGetRequest) {
-            const params = Object.keys(data);
-            const finalUrl = `${url}${url.includes('?') ? '&' : '?'}${toQueryParams(params)}`;
-            return fetchAndCheck(mapUriToBaseUrl(finalUrl), { ...settings, ...options });
+            const finalUrl = `${url}${url.includes('?') ? '&' : '?'}${toQueryParams(data)}`;
+            return fetchAndCheck(mapUriToBaseUrl(finalUrl), { ...settings, ...options }).then(toJson);
         }
 
         if (settings['Content-Type'].includes('json')) {

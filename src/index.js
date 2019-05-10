@@ -18,8 +18,9 @@ import Dashboard from './routes/dashboard';
 import NoMatch from './routes/404';
 import reset from './css/reset';
 import styles from './css/styles';
+import reactTable from './css/react-table';
 
-const GlobalStyle = createGlobalStyle`${reset}${styles}`;
+const GlobalStyle = createGlobalStyle`${reset}${styles}${reactTable}`;
 
 ReactDOM.render(
     <BrowserRouter>
