@@ -40,7 +40,7 @@ const StyledA = styled.a`
 
 const Dashboard = () => (
     <IfNotAuthRedirectTo route={ROUTE_LOGIN}>
-        {({ user, balance, files, clearStorage, fetchWalletBalance, addFiles }) => {
+        {({ user, balance, files, room, peers, messages, clearStorage, fetchWalletBalance, addFiles, broadcastMessage }) => {
             const [hasLoadedBefore, setHasLoadedBefore] = useState(false);
 
             const refreshBalance = () => fetchWalletBalance(user.account);
@@ -68,6 +68,22 @@ const Dashboard = () => (
                             <Section>
                                 <H3>Welcome!</H3>
                                 <P>This page demonstrates how you can upload file to your smart vault.</P>
+                            </Section>
+                            <Section>
+                                <H3>Peers ({peers.length + 1})</H3>
+                                {peers.map(peer => <div key={peer}>{peer}</div>)}
+                            </Section>
+                            <Section>
+                                <H3>Messages</H3>
+                                {messages.map(message => <div key={message}>{message}</div>)}
+                                <button
+                                    type='submit'
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        broadcastMessage(room, (new Date()).toISOString());
+                                    }}
+                                >Broadcast time
+                                </button>
                             </Section>
                             <Section>
                                 <H3>Your Wallet</H3>

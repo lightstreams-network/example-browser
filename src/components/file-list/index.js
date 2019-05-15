@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import { Button } from '../elements';
 
 const FileList = ({ files }) => {
     const columns = [{
@@ -23,7 +22,6 @@ const FileList = ({ files }) => {
         className='-striped -highlight'
         data={files}
         columns={columns}
-        showPaginationBottom={true}
         defaultPageSize={5}
     />;
 };

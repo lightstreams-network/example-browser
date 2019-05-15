@@ -42,7 +42,6 @@ const Dropzone = ({ user, addFiles }) => {
             console.log('Loading file')
             const binaryStr = reader.result;
             console.log(binaryStr);
-
         };
 
         addFiles({
