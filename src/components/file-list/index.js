@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactTable from 'react-table';
 
-const FileList = ({ files }) => {
+const FileList = ({ user, files, showModal, grantAccess}) => {
+    const [toAccount, setToAccount] = useState('');
     const columns = [{
         Header: 'Filename',
         accessor: 'filename' // String-based value accessors!
@@ -14,9 +15,25 @@ const FileList = ({ files }) => {
     }, {
         Header: 'Actions',
         accessor: 'acl',
-        Cell: (row) => <button onClick={() => console.log(row.value)}>Grant</button>
-    }
-    ];
+        Cell: (row) => (
+            <form
+                onSubmit={(e) => {
+                    const grant = {
+                        acl: row.value,
+                        ownerAccount: user.account,
+                        password: user.password,
+                        toAccount,
+                        permissionType: 'read'
+                    };
+                    grantAccess(grant);
+                    e.preventDefault();
+                }}
+            >
+                <input type='text' onChange={(e) => setToAccount(e.target.value)} value={toAccount} />
+                <button type='submit'>Grant</button>
+            </form>
+        )
+    }];
 
     return <ReactTable
         className='-striped -highlight'

@@ -132,7 +132,6 @@ export const Span = styled.span`
 
 export const Box = styled.div`
     background: #fff;
-    width: 75%;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.32);
     border-radius: 6px;
 `;

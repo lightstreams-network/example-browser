@@ -58,13 +58,6 @@ const reset = css`
         outline: 0;
     }
 
-    button {
-        appearance: none;
-        background-color: transparent;
-        border: 0;
-        padding: 0;
-    }
-
     input,
     fieldset {
         appearance: none;

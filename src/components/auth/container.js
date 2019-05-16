@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isAuthenticated, getAuthenticatedUser, clearStoredState } from '../../store/auth';
-import { lethStorageAdd, getWalletBalance, lethWalletBalance, getLethFiles } from '../../store/leth';
+import { isAuthenticated, getAuthenticatedUser, getUserToken, clearStoredState } from '../../store/auth';
+import { lethStorageAdd, getWalletBalance, lethWalletBalance, lethAclGrant, getLethFiles, lethStorageFetch, getFileDataUrl } from '../../store/leth';
 import { getIpfsRoom, getIpfsPeers, getIpfsMessages, broadcast } from '../../store/ipfs';
 
 // see https://frontarm.com/james-k-nelson/passing-data-props-children/
@@ -11,11 +11,13 @@ const mapStateToProps = (state) => {
     return {
         isAuthenticated: isAuthenticated(state),
         user: getAuthenticatedUser(state),
+        token: getUserToken(state),
         balance: getWalletBalance(state),
         files: getLethFiles(state),
         room: getIpfsRoom(state),
         peers: getIpfsPeers(state),
-        messages: getIpfsMessages(state)
+        messages: getIpfsMessages(state),
+        fileDataUrl: getFileDataUrl(state)
     };
 };
 
@@ -32,6 +34,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         broadcastMessage(room, message) {
             dispatch(broadcast(room, message));
+        },
+        grantAccess({ acl, ownerAccount, password, toAccount, permissionType }) {
+            dispatch(lethAclGrant({ acl, ownerAccount, password, toAccount, permissionType }));
+        },
+        getFileData({ meta, token }) {
+            dispatch(lethStorageFetch({ meta, token }));
         }
     };
 };

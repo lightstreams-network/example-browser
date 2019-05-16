@@ -6,6 +6,8 @@ import Logo from '../components/logo';
 import CopyToClipboard from '../components/copy-to-clipboard';
 import Dropzone from '../components/dropzone';
 import FileList from '../components/file-list';
+import Modal from '../components/modal';
+
 import {
     Container,
     Wrapper,
@@ -40,8 +42,12 @@ const StyledA = styled.a`
 
 const Dashboard = () => (
     <IfNotAuthRedirectTo route={ROUTE_LOGIN}>
-        {({ user, balance, files, room, peers, messages, clearStorage, fetchWalletBalance, addFiles, broadcastMessage }) => {
+        {({ user, token, balance, files, room, peers, messages, fileDataUrl,
+            clearStorage, fetchWalletBalance, addFiles, broadcastMessage, grantAccess, getFileData
+        }) => {
             const [hasLoadedBefore, setHasLoadedBefore] = useState(false);
+            const [modalShow, setModalShow] = useState(false);
+            const [meta, setMeta] = useState('');
 
             const refreshBalance = () => fetchWalletBalance(user.account);
 
@@ -54,7 +60,7 @@ const Dashboard = () => (
             return (
                 <Container>
                     <Wrapper>
-                        <Header className='w-100 w-75-ns'>
+                        <Header className='w-100'>
                             <Logo className='big' url='/' />
                             <Flex>
                                 <StyledLink onClick={(e) => {
@@ -85,6 +91,7 @@ const Dashboard = () => (
                                 >Broadcast time
                                 </button>
                             </Section>
+
                             <Section>
                                 <H3>Your Wallet</H3>
                                 <CopyToClipboard initialText={user.account} />
@@ -94,12 +101,25 @@ const Dashboard = () => (
                                 <P>{parseFloat(balance/1000000000000000000)}</P>
                             </Section>
                             <Section>
+                                <H3>Download a file</H3>
+                                <form
+                                    onSubmit={(e) => {
+                                        getFileData({ meta, token });
+                                        e.preventDefault();
+                                    }}
+                                >
+                                    <input type='text' onChange={(e) => setMeta(e.target.value)} value={meta} />
+                                    <button type='submit'>Get Download Link</button>
+                                </form>
+                                {fileDataUrl ? <a href={fileDataUrl}>Your file link</a> : null}
+                            </Section>
+                            <Section>
                                 <H3>Upload a file</H3>
                                 <Dropzone user={user} addFiles={addFiles} refreshBalance={refreshBalance} />
                             </Section>
                             <Section>
                                 <H3>Files</H3>
-                                <FileList files={files} />
+                                <FileList user={user} grantAccess={grantAccess} files={files} />
                             </Section>
                             <Section>
                                 <P><span className='em'>Are you a developer?</span> <StyledA href="https://docs.lightstreams.network">Check out the documentation</StyledA></P>

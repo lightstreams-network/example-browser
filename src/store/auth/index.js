@@ -1,5 +1,7 @@
+import { initIpfsNode } from '../ipfs';
 import { hGet, hPost } from '../../lib/fetch';
 import  get from 'lodash.get';
+const { ipfs } = require('../../lib/ipfs-node');
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -41,15 +43,10 @@ export function fetchToken({ account, password }) {
     return (dispatch) => {
         dispatch(requestToken(account, password));
 
-        // return delay(2000).then(() => {
-        //     dispatch(receiveToken('sometoken'));
-        //     dispatch(receiveUser({ id: 1, fullName: 'Fan Base', email: 'fb@fanbase.live'}));
-        // });
-
         return hPost('/user/signin', { account, password })
         .then((response) => {
             dispatch(receiveToken(response.token));
-            dispatch(receiveUser({ account, password }))
+            dispatch(receiveUser({ account, password }));
             return response.token;
         })
         .catch((error) => {
@@ -110,10 +107,6 @@ export function fetchUserFromToken(token) {
 export function createUser({ password }) {
     return (dispatch) => {
         dispatch(requestCreateUser());
-
-        // return delay(2000).then(() => {
-        //     dispatch(receiveUser({ id: 1, fullName: 'Lightstreams', email: 'notifications@lightstreams.io '}));
-        // });
 
         return hPost('/user/signup', { password })
         .then((response) => {
@@ -184,5 +177,6 @@ export default function authReducer(state = initialState, action = {}) {
 
 
 export const getAuthenticatedUser = (state) => get(state, ['auth', 'user'], null)
+export const getUserToken = (state) => get(state, ['auth', 'token'], null)
 export const isAuthenticated = (state) => getAuthenticatedUser(state) !== null;
 export const getAuthErrors = (state) => get(state, ['auth', 'error'], null)

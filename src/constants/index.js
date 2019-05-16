@@ -14,4 +14,4 @@ export const RESET_PASSWORD = 'Reset password';
 export const FORM_SENDING = 'Sending...';
 export const AUTH_WRONG_EMAIL_OR_PASSWORD = 'Email/password combination wrong';
 
-export const IPFS_ROOM_NAME = 'lsn-ipfs-room-transoundify-1';
+export const IPFS_ROOM_NAME = 'lsn-ipfs-room-transoundify-2';
