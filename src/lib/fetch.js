@@ -21,6 +21,10 @@ function toJson(response) {
     return response.json();
 }
 
+function toBlob(response) {
+    return response.blob();
+}
+
 export const toQueryParams = (params) => {
     return Object.keys(params)
         .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
@@ -34,9 +38,9 @@ export const fetchAndCheck = (url, options) => fetch(url, options).then(checkSta
 export const request = (method, url, data, options) => {
     const settings = {
         method: method.toUpperCase(),
-        'Accept': 'application/json',
+        'Accept': options.Accept || 'application/json',
         'Content-Type': options['Content-Type'] || 'application/json',
-        credentials:  'same-origin',
+        credentials:  options.credentials || 'same-origin',
     };
 
     const isGetRequest = settings.method === 'GET';
