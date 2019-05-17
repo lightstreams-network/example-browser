@@ -62,7 +62,7 @@ export function initIpfsNode() {
             room.on('peer joined', (peer) => {
                 // console.log('Peer joined the room', peer);
                 dispatch(peerJoined(peer));
-                dispatch(broadcast(room, `Account ${getState().auth.user.account} joined the room`));
+                dispatch(broadcast(room, `Account ${getState().auth.user.account} joined`));
             });
 
             room.on('peer left', (peer) => {

@@ -35,7 +35,7 @@ const StyledA = styled.a`
     color: var(--pink);
 `;
 
-const IpfsSection = ({user, peers, selfPeer, messages, broadcastMessage}) => (
+const IpfsSection = ({user, room, peers, selfPeer, messages, broadcastMessage}) => (
     <div>
         <H3>Your Peer ID</H3>
         <p>{selfPeer && selfPeer.id}</p>
@@ -57,7 +57,7 @@ const IpfsSection = ({user, peers, selfPeer, messages, broadcastMessage}) => (
             type='submit'
             onClick={(e) => {
                 e.preventDefault();
-                broadcastMessage(room, `Please grant access to ${user.account}`);
+                broadcastMessage(room, `${user.account}`);
             }}
         >Broadcast Public Address
         </button>
@@ -102,6 +102,7 @@ const Dashboard = () => (
                                 {(ipfsReady) ?
                                     <IpfsSection
                                         user={user}
+                                        room={room}
                                         selfPeer={selfPeer}
                                         peers={peers}
                                         messages={messages}
