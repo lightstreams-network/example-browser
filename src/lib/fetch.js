@@ -1,5 +1,7 @@
 import { SERVER_URL } from '../constants';
 
+export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 function getBaseUrl(uri = '') {
     return `${SERVER_URL}${uri}`;
 }
