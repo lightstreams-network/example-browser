@@ -1,15 +1,12 @@
-import { initIpfsNode, getIpfsInited } from '../ipfs';
-import { hGet, hPost } from '../../lib/fetch';
 import  get from 'lodash.get';
-
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+import { initIpfsNode, getIpfsInited } from '../ipfs';
+import { hPost } from '../../lib/fetch';
 
 const initialState = {
     user: null,
     error: null,
     token: null
 };
-
 
 export const REQUEST_TOKEN = 'lsn/auth/REQUEST_TOKEN';
 export function requestToken(username, password) {
@@ -40,19 +37,22 @@ export function receiveAuthError(error) {
 
 export function fetchToken({ account, password }) {
     return (dispatch, getState) => {
-        dispatch(requestToken(account, password));
+        return new Promise((resolve, reject) => {
+            dispatch(requestToken(account, password));
 
-        return hPost('/user/signin', { account, password })
-        .then((response) => {
-            dispatch(receiveToken(response.token));
-            dispatch(receiveUser({ account, password }));
-            if (!getIpfsInited(getState())) dispatch(initIpfsNode());
-            return response.token;
-        })
-        .catch((error) => {
-            dispatch(receiveAuthError(error));
-            throw error;
+            return hPost('/user/signin', { account, password })
+                .then((response) => {
+                    if (!getIpfsInited(getState())) dispatch(initIpfsNode());
+                    dispatch(receiveToken(response.token));
+                    resolve(dispatch(receiveUser({ account, password })));
+                })
+                .catch((error) => {
+                    dispatch(receiveAuthError(error));
+                    reject(error);
+                    // throw error;
+                });
         });
+
     }
 }
 
@@ -88,37 +88,22 @@ export function clearStoredState() {
     }
 }
 
-export function fetchUserFromToken(token) {
-    return (dispatch) => {
-        dispatch(requestUser());
-
-        return hGet('/profile', null, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then((user) => dispatch(receiveUser(user)))
-        .catch((error) => {
-            throw error;
-        });
-    };
-}
-
 export function createUser({ password }) {
     return (dispatch) => {
-        dispatch(requestCreateUser());
+        return new Promise((resolve, reject) => {
+            dispatch(requestCreateUser());
 
-        return hPost('/user/signup', { password })
-        .then((response) => {
-            dispatch(fetchToken({ account: response.account, password }))
-            return response;
-        })
-        .catch((error) => {
-            debugger;
-            dispatch(receiveAuthError(error));
-            throw error;
+            return hPost('/user/signup', { password })
+                .then((response) => {
+                    resolve(dispatch(fetchToken({ account: response.account, password })));
+                    return response;
+                })
+                .catch((error) => {
+                    reject(dispatch(receiveAuthError(error)));
+                    throw error;
+                });
         });
-    }
+    };
 }
 
 export default function authReducer(state = initialState, action = {}) {
