@@ -58,17 +58,6 @@ const reset = css`
         outline: 0;
     }
 
-    input,
-    fieldset {
-        appearance: none;
-        border: 0;
-        padding: 0;
-        margin: 0;
-        min-width: 0;
-        font-size: 1rem;
-        font-family: inherit;
-    }
-
     input::-ms-clear {
         display: none;
     }
