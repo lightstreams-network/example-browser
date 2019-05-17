@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isAuthenticated, getAuthenticatedUser, getUserToken, clearStoredState } from '../../store/auth';
 import { lethStorageAdd, getWalletBalance, lethWalletBalance, lethAclGrant, getLethFiles, lethStorageFetch, getFileDataUrl } from '../../store/leth';
-import { getIpfsRoom, getIpfsPeers, getIpfsMessages, broadcast } from '../../store/ipfs';
+import { getIpfsReady, getIpfsRoom, getIpfsPeers, getIpfsMessages, getSelfPeer, broadcast } from '../../store/ipfs';
 
 // see https://frontarm.com/james-k-nelson/passing-data-props-children/
 
@@ -17,7 +17,9 @@ const mapStateToProps = (state) => {
         room: getIpfsRoom(state),
         peers: getIpfsPeers(state),
         messages: getIpfsMessages(state),
-        fileDataUrl: getFileDataUrl(state)
+        fileDataUrl: getFileDataUrl(state),
+        ipfsReady: getIpfsReady(state),
+        selfPeer: getSelfPeer(state)
     };
 };
 

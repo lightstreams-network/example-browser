@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import rootReducer from './reducers';
 import { loadState, saveState } from './local-storage';
+import { isAuthenticated } from './auth';
 import { initIpfsNode } from './ipfs';
 
 const initialState = loadState();
@@ -23,6 +24,12 @@ store.subscribe(() => {
     saveState(store.getState());
 });
 
-store.dispatch(initIpfsNode());
+function initStore({ dispatch, getState }) {
+    if (isAuthenticated(getState())) {
+        dispatch(initIpfsNode());
+    }
+}
+
+initStore(store);
 
 export default store;

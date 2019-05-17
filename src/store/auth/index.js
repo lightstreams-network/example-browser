@@ -1,7 +1,6 @@
-import { initIpfsNode } from '../ipfs';
+import { initIpfsNode, getIpfsInited } from '../ipfs';
 import { hGet, hPost } from '../../lib/fetch';
 import  get from 'lodash.get';
-const { ipfs } = require('../../lib/ipfs-node');
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -40,13 +39,14 @@ export function receiveAuthError(error) {
 }
 
 export function fetchToken({ account, password }) {
-    return (dispatch) => {
+    return (dispatch, getState) => {
         dispatch(requestToken(account, password));
 
         return hPost('/user/signin', { account, password })
         .then((response) => {
             dispatch(receiveToken(response.token));
             dispatch(receiveUser({ account, password }));
+            if (!getIpfsInited(getState())) dispatch(initIpfsNode());
             return response.token;
         })
         .catch((error) => {
@@ -110,7 +110,7 @@ export function createUser({ password }) {
 
         return hPost('/user/signup', { password })
         .then((response) => {
-            dispatch(receiveUser({ password, ...response }));
+            dispatch(fetchToken({ account: response.account, password }))
             return response;
         })
         .catch((error) => {

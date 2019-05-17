@@ -4,10 +4,6 @@ import Logo from '../components/logo';
 import { IfAuth, IfNotAuth, IfAuthRedirectTo } from '../components/auth';
 import { ROUTE_DASHBOARD } from '../constants';
 
-// import {
-//     FirebaseContext
-// } from '../components/firebase';
-
 const Home = () => (
     <IfAuthRedirectTo route={ROUTE_DASHBOARD}>
         {() => (

@@ -7,15 +7,19 @@ import {
 
 const initialState = {
     selfPeer: null,
-    instance: null,
+    ipfsInited: false,
+    ipfsReady: false,
     messages: [],
     peers: [],
     room: null,
     error: null
 };
 
-const INITIALIZE_PEER = 'lsn/ipfs/INITIALIZE_PEER';
-const initializePeer = createAction(INITIALIZE_PEER);
+const INITIALIZE_IPFS = 'lsn/ipfs/INITIALIZE_IPFS';
+const initializeIpfs = createAction(INITIALIZE_IPFS);
+
+const SET_IPFS_READY = 'lsn/ipfs/SET_IPFS_READY';
+const setIpfsReady = createAction(SET_IPFS_READY);
 
 const SET_SELF_PEER = 'lsn/ipfs/SET_SELF_PEER';
 const setSelfPeer = createAction(SET_SELF_PEER);
@@ -48,25 +52,27 @@ export function initIpfsNode() {
 
         const { ipfs } = require('../../lib/ipfs-node');
 
-        dispatch(initializePeer());
+        dispatch(initializeIpfs());
 
         ipfs.on('ready', () => {
+            dispatch(setIpfsReady());
+
             const room = useRoom(ipfs, IPFS_ROOM_NAME);
 
             room.on('peer joined', (peer) => {
-                console.log('Peer joined the room', peer);
+                // console.log('Peer joined the room', peer);
                 dispatch(peerJoined(peer));
+                dispatch(broadcast(room, `Account ${getState().auth.user.account} joined the room`));
             });
 
             room.on('peer left', (peer) => {
-                console.log('Peer left...', peer);
+                // console.log('Peer left...', peer);
                 dispatch(peerLeft(peer));
             });
 
-            room.on('subscribed', async (message) => {
+            room.on('subscribed', async () => {
                 const selfPeer = await ipfs.id();
                 dispatch(setSelfPeer(selfPeer));
-                dispatch(broadcast(room, `Hello from ${selfPeer.id} with account ${getState().auth.user.account}`));
             });
 
             room.on('message', (message) => {
@@ -84,14 +90,19 @@ const CLEAR_STORED_STATE = 'lsn/auth/CLEAR_STORED_STATE';
 const clearStoredState = createAction(CLEAR_STORED_STATE);
 
 export default createReducer({
-    [initializePeer]: (state, payload) => ({
+    [initializeIpfs]: (state) => ({
         ...state,
         ipfsInited: true,
         error: null
     }),
+    [setIpfsReady]: (state) => ({
+        ...state,
+        ipfsReady: true,
+        error: null
+    }),
     [setSelfPeer]: (state, payload) => ({
         ...state,
-        peer: payload
+        selfPeer: payload
     }),
     [setRoom]: (state, payload) => ({
         ...state,
@@ -144,6 +155,7 @@ export default createReducer({
 }, initialState);
 
 export const getIpfsInited = (state) => get(state, ['ipfs', 'ipfsInited'], null);
+export const getIpfsReady = (state) => get(state, ['ipfs', 'ipfsReady'], null);
 export const getSelfPeer = (state) => get(state, ['ipfs', 'selfPeer'], null);
 export const getIpfsRoom = (state) => get(state, ['ipfs', 'room'], null);
 export const getIpfsPeers = (state) => get(state, ['ipfs', 'peers'], null);

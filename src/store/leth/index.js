@@ -1,8 +1,10 @@
 import get from 'lodash.get';
 import { createAction, createReducer } from 'redux-act';
 import lsClient from 'lightstreams-js-sdk';
+import useRoom from 'ipfs-pubsub-room';
+import { broadcast } from '../ipfs';
 import { hGet, hPost } from '../../lib/fetch';
-import { SERVER_URL } from '../../constants';
+import { SERVER_URL, IPFS_ROOM_NAME } from '../../constants';
 
 const gateway = lsClient(SERVER_URL);
 
@@ -98,10 +100,12 @@ export function lethStorageFetch({ meta, token }) {
 export function lethAclGrant({ acl, ownerAccount, password, toAccount, permissionType }) {
     return async (dispatch) => {
         dispatch(requestLethAclGrant());
-
+        const { ipfs } = require('../../lib/ipfs-node');
         return gateway.acl.grant(acl, ownerAccount, password, toAccount, permissionType)
             .then(response => {
+                const room = useRoom(ipfs, IPFS_ROOM_NAME);
                 dispatch(responseLethAclGrant(response));
+                dispatch(broadcast(room, `${ownerAccount} granted ${permissionType} permission for ${acl} to ${toAccount}`));
                 return response;
             })
             .catch((error) => {

@@ -35,9 +35,38 @@ const StyledA = styled.a`
     color: var(--pink);
 `;
 
+const IpfsSection = ({user, peers, selfPeer, messages, broadcastMessage}) => (
+    <div>
+        <H3>Your Peer ID</H3>
+        <p>{selfPeer && selfPeer.id}</p>
+
+        <H3>Peers ({peers.length})</H3>
+        {peers.map(peer => <div key={peer}>{peer}</div>)}
+
+        <H3>Messages</H3>
+        {messages.map((message, i) => <div key={i}>{message}</div>)}
+        <button
+            type='submit'
+            onClick={(e) => {
+                e.preventDefault();
+                broadcastMessage(room, (new Date()).toISOString());
+            }}
+        >Broadcast time
+        </button>
+        <button
+            type='submit'
+            onClick={(e) => {
+                e.preventDefault();
+                broadcastMessage(room, `Please grant access to ${user.account}`);
+            }}
+        >Broadcast Public Address
+        </button>
+    </div>
+);
+
 const Dashboard = () => (
     <IfNotAuthRedirectTo route={ROUTE_LOGIN}>
-        {({ user, token, balance, files, room, peers, messages, fileDataUrl,
+        {({ user, token, balance, files, room, peers, messages, fileDataUrl, ipfsReady, selfPeer,
             clearStorage, fetchWalletBalance, addFiles, broadcastMessage, grantAccess, getFileData
         }) => {
             const [hasLoadedBefore, setHasLoadedBefore] = useState(false);
@@ -70,20 +99,16 @@ const Dashboard = () => (
                                 <P>This page demonstrates how you can upload file to your smart vault.</P>
                             </Section>
                             <Section>
-                                <H3>Peers ({peers.length + 1})</H3>
-                                {peers.map(peer => <div key={peer}>{peer}</div>)}
-                            </Section>
-                            <Section>
-                                <H3>Messages</H3>
-                                {messages.map(message => <div key={message}>{message}</div>)}
-                                <button
-                                    type='submit'
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        broadcastMessage(room, (new Date()).toISOString());
-                                    }}
-                                >Broadcast time
-                                </button>
+                                {(ipfsReady) ?
+                                    <IpfsSection
+                                        user={user}
+                                        selfPeer={selfPeer}
+                                        peers={peers}
+                                        messages={messages}
+                                        broadcastMessage={broadcastMessage}
+                                    />
+                                    : 'Initializing IPFS node...'
+                                }
                             </Section>
 
                             <Section>
@@ -105,7 +130,7 @@ const Dashboard = () => (
                                     <input type='text' onChange={(e) => setMeta(e.target.value)} value={meta} />
                                     <button type='submit'>Get Download Link</button>
                                 </form>
-                                {fileDataUrl ? <StyledA href={fileDataUrl}>Your file link</StyledA> : null}
+                                {fileDataUrl ? <StyledA href={fileDataUrl} download='file-content'>Your file link</StyledA> : null}
                             </Section>
                             <Section>
                                 <H3>Upload a file</H3>
