@@ -6,7 +6,6 @@ import Logo from '../components/logo';
 import CopyToClipboard from '../components/copy-to-clipboard';
 import Dropzone from '../components/dropzone';
 import FileList from '../components/file-list';
-import Modal from '../components/modal';
 
 import {
     Container,
@@ -32,10 +31,6 @@ const Header = styled.div`
     }
 `;
 
-const Intro = styled.div`
-    padding-bottom: 15px;
-`;
-
 const StyledA = styled.a`
     color: var(--pink);
 `;
@@ -46,7 +41,6 @@ const Dashboard = () => (
             clearStorage, fetchWalletBalance, addFiles, broadcastMessage, grantAccess, getFileData
         }) => {
             const [hasLoadedBefore, setHasLoadedBefore] = useState(false);
-            const [modalShow, setModalShow] = useState(false);
             const [meta, setMeta] = useState('');
 
             const refreshBalance = () => fetchWalletBalance(user.account);
@@ -103,7 +97,7 @@ const Dashboard = () => (
                             <Section>
                                 <H3>Download a file</H3>
                                 <form
-                                    onSubmit={(e) => {
+                                    onSubmit={async (e) => {
                                         getFileData({ meta, token });
                                         e.preventDefault();
                                     }}
@@ -111,7 +105,7 @@ const Dashboard = () => (
                                     <input type='text' onChange={(e) => setMeta(e.target.value)} value={meta} />
                                     <button type='submit'>Get Download Link</button>
                                 </form>
-                                {fileDataUrl ? <a href={fileDataUrl}>Your file link</a> : null}
+                                {fileDataUrl ? <StyledA href={fileDataUrl}>Your file link</StyledA> : null}
                             </Section>
                             <Section>
                                 <H3>Upload a file</H3>
@@ -122,7 +116,7 @@ const Dashboard = () => (
                                 <FileList user={user} grantAccess={grantAccess} files={files} />
                             </Section>
                             <Section>
-                                <P><span className='em'>Are you a developer?</span> <StyledA href="https://docs.lightstreams.network">Check out the documentation</StyledA></P>
+                                <P><span className='em'>Are you a developer?</span> <StyledA href='https://docs.lightstreams.network'>Check out the documentation</StyledA></P>
                             </Section>
                         </Box>
 

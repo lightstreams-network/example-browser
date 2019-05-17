@@ -76,41 +76,22 @@ export function lethStorageAdd({ account, password, files }) {
     };
 };
 
-export function lethStorageFetch1({ meta, token }) {
-    return (dispatch) => {
-        dispatch(requestLethStorageFetch());
-
-        return gateway.storage.fetch(meta, token)
-            .then((response) => {
-                debugger;
-                const blob = new Blob([response], { type: 'application/pdf' });
-                const fileDataUrl = URL.createObjectURL(blob);
-                dispatch(responseLethStorageFetch(fileDataUrl));
-                return response;
-            })
-            .catch((error) => {
-                dispatch(receiveLethError(error));
-                throw error;
-            });
-    };
-}
-
 export function lethStorageFetch({ meta, token }) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(requestLethStorageFetch());
 
-        return hGet('/storage/fetch', { meta, token })
-            .then((response) => {
-                debugger;
-                const blob = new Blob([response], { type: 'application/pdf' });
-                const fileDataUrl = URL.createObjectURL(blob);
+        const response = await fetch(`${SERVER_URL}/storage/fetch?meta=${meta}&token=${token}`);
+        response.blob().then((content) => {
+            const reader = new FileReader();
+            reader.onabort = () => console.log('file reading was aborted');
+            reader.onerror = () => console.log('file reading has failed');
+            reader.addEventListener('loadend', () => {
+                reader.removeEventListener('loadend', this);
+                const fileDataUrl = reader.result;
                 dispatch(responseLethStorageFetch(fileDataUrl));
-                return response;
-            })
-            .catch((error) => {
-                dispatch(receiveLethError(error));
-                throw error;
             });
+            reader.readAsDataURL(content);
+        });
     };
 }
 
