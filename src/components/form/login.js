@@ -30,7 +30,7 @@ const LoginForm = ({ url, authErrors, handleSubmit }) => {
 
     return (
         <Formik
-            initialValues={{ account: '', password: '' }}
+            initialValues={{ account: '0xBaB8D71E622CB455e6388e20DcE1A8B0F7E13c5A', password: 'adminadmin' }}
             validate={values => ({ ...validateAccount(values), ...validatePassword(values) })}
             onSubmit={(values, { setSubmitting, setErrors }) => {
                 handleSubmit(url, values)

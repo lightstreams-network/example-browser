@@ -1,6 +1,6 @@
 {
-    "name": "transoundify",
-    "version": "1.0.0",
+    "name": "example-browser",
+    "version": "1.0.1",
     "description": "A decentralized application running on the Lightstreams Network",
     "main": "src/index.js",
     "scripts": {
@@ -17,23 +17,21 @@
         "react",
         "redux",
         "webpack",
-        "jest",
-        "styled-components",
         "lightstreams",
         "lightstreams-network",
-        "smart-vault"
+        "smart-vault",
+        "leth"
     ],
     "author": "Andrew Zappella <andrew.zappella@gmail.com>",
-    "license": "UNLICENSED",
-    "private": true,
+    "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/lightstreams-network/account-manager.git"
+        "url": "git+https://github.com/lightstreams-network/example-browser.git"
     },
     "bugs": {
-        "url": "https://github.com/lightstreams-network/account-manager/issues"
+        "url": "https://github.com/lightstreams-network/example-browser/issues"
     },
-    "homepage": "https://github.com/lightstreams-network/account-manager/#readme",
+    "homepage": "https://github.com/lightstreams-network/example-browser/#readme",
     "devDependencies": {
         "@babel/core": "^7.3.3",
         "@babel/node": "^7.2.2",

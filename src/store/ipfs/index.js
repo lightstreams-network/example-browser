@@ -37,7 +37,6 @@ export const broadcast = (room, message) => {
     return (dispatch) => {
         dispatch(startBroadcast());
         room.broadcast(message);
-        // return dispatch(receiveBroadcast(message));
     };
 };
 

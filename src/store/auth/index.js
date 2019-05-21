@@ -49,7 +49,6 @@ export function fetchToken({ account, password }) {
                 .catch((error) => {
                     dispatch(receiveAuthError(error));
                     reject(error);
-                    // throw error;
                 });
         });
 
@@ -159,7 +158,6 @@ export default function authReducer(state = initialState, action = {}) {
             return state;
     }
 };
-
 
 export const getAuthenticatedUser = (state) => get(state, ['auth', 'user'], null)
 export const getUserToken = (state) => get(state, ['auth', 'token'], null)
